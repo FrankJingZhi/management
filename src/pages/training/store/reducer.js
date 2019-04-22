@@ -12,17 +12,7 @@ import * as containts from './containts';
  * @param {} 将默认数据转化为immutable对象
  */
 const defaultState = fromJS({
-	//	登录页导航栏标签
-	headerList: [
-		{ id: 1, name: '优科技官网', url: '#' },
-		{ id: 2, name: '技术博客', url: '#' },
-		{ id: 3, name: '关于我们', url: '' }
-	],
-	//	登录用户信息
-	userInfo: {
-		name: '',	//用户名
-		permission: '',	//用户权限
-	}
+	tips:[]
 });
 
 /**
@@ -33,8 +23,8 @@ const defaultState = fromJS({
 export default (state = defaultState, action) => {
 	switch (action.type) {
 		// 监听并修改用户信息
-		case containts.CHANGE_USER_INFO:
-			return state.set('userInfo', action.data);
+		case containts.GET_TIPS:
+			return state.set('tips', action.data);
 		default:
 			return state;
 	}

@@ -4,12 +4,17 @@ import { Layout } from 'antd';
 import HeaderUI from '../../common/layout/header'; //引入公共布局组件
 import FooterUI from '../../common/layout/footer'; //引入公共布局组件
 import BreadCrumbUI from '../../common/layout/breadcrumb'; //引入公共布局组件
-// import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
+import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
+import Tags from './components/tags';
 
 const { Content } = Layout;
 
 class Training extends PureComponent {
+	componentDidMount(){
+		this.props.getTips();
+	}
 	render() {
+		const { Tips } = this.props;
 		return (
 			<Layout>
 				<HeaderUI />
@@ -17,7 +22,9 @@ class Training extends PureComponent {
 					<BreadCrumbUI />
 					<Layout style={{ padding: '24px 0', background: '#fff' }}>
 						<Content style={{ padding: '0 24px', minHeight: 280 }}>
-							
+							<Tags 
+								tips={Tips}
+							/>
 						</Content>
 					</Layout>
 				</Content>
@@ -27,8 +34,14 @@ class Training extends PureComponent {
 	}
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+	Tips:state.getIn(['training','tips']),	// 获取类型信息
+});
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	getTips(){
+		dispatch(actionCreators.getTips())
+	}
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Training);

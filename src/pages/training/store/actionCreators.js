@@ -3,47 +3,34 @@
  * @LastAuthor: Do not edit
  * @description: 需要派发的action
  * @since: 2019-04-16 10:47:01
- * @lastTime: 2019-04-16 15:20:49
+ * @lastTime: 2019-04-22 17:44:26
  */
 import axios from 'axios';
 import * as containts from './containts';
 import { fromJS } from 'immutable'; //
 
-/*
+
+/**
  * @Author: Frank
- * @LastAuthor: Do not edit
- * @description: 登录api
- * @since: 2019-04-16 10:47:01
+ * @lastTime: 2019-04-22 18:28:59
+ * @LastEditors: Do not edit
+ * @description: 获取标签信息
+ * @since: 2019-04-22 18:19:43
  */
-export const loginClick = (userName,password) => {
+export const getTips = () => {
     return (dispatch)=>{
-        axios({
-            method:'post',
-            url:'/api/login/login.json',
-            data:{
-                userName
-            }
-        }).then((res)=>{
-            let data = {};
-            if(res.status){
-                data = {
-                    name:userName,
-                    permission:res.data.permission
-                }
-            }else{
-                data = {
-                    name:null,
-                    permission:null
-                }
-            }
-            dispatch(changeUserInfo(data))
+        axios.get('/api/training/tags.json')
+        .then((res)=>{
+            const data = res.data.data;
+            dispatch(changeTips(data))
         }).catch(()=>{
-            console.log('服务器繁忙，请稍后...')
+            console.log('tags通讯失败...')
         })
     }
 }
 
-export const changeUserInfo = (data) => ({
-    type:containts.CHANGE_USER_INFO,
-    data: fromJS(data)
+export const changeTips = (data) => ({
+    type: containts.GET_TIPS,
+    data:fromJS(data)
 })
+
