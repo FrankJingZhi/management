@@ -19,8 +19,8 @@ export const TagTips = styled.ul`
 	width: 90%;
 	flex-wrap: wrap;
 	align-items: center;
-	.active{
-		background-color:#001529;
+	.active {
+		background-color: #001529;
 		color: #fff;
 	}
 `;
@@ -33,12 +33,36 @@ export const TagTipsLi = styled.li`
 	color: #2c3e50;
 	border-radius: 3px;
 	width: 84px;
-    height: 25px;
-    justify-content: center;
-	
+	height: 25px;
+	justify-content: center;
 `;
 
 export const TagTipsText = styled.p`
 	cursor: pointer;
 	padding: 0 10px;
+`;
+
+export const ListWrapper = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+`;
+export const ItemWrapper = styled.div`
+	width: 18%;
+	min-height:400px;
+`;
+
+export const ItemWrapperTop = styled.div`
+	height: 70%;
+`;
+export const ItemImg = styled.img`
+	width: 100%;
+	&::after{
+		content:'应急响应随堂测';
+	}
+`;
+export const ItemWrapperMid = styled.div`
+	height: 15%;
+`;
+export const ItemWrapperBtm = styled.div`
+	height:15%;
 `;

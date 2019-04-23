@@ -6,6 +6,7 @@ import FooterUI from '../../common/layout/footer'; //引入公共布局组件
 import BreadCrumbUI from '../../common/layout/breadcrumb'; //引入公共布局组件
 import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
 import Tags from './components/tags';
+import List from './components/list';
 
 const { Content } = Layout;
 
@@ -24,7 +25,7 @@ class Training extends PureComponent {
 						<Content style={{ padding: '0 24px', minHeight: 280 }}>
 							<Tags tips={Tips} type={Type.get('0')} />
 							<Tags tips={Difficult} type={Type.get('1')} />
-							
+							<List />
 						</Content>
 					</Layout>
 				</Content>
