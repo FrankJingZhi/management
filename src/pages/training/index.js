@@ -10,11 +10,11 @@ import Tags from './components/tags';
 const { Content } = Layout;
 
 class Training extends PureComponent {
-	componentDidMount(){
+	componentDidMount() {
 		this.props.getTips();
 	}
 	render() {
-		const { Tips } = this.props;
+		const { Tips, Type, Difficult } = this.props;
 		return (
 			<Layout>
 				<HeaderUI />
@@ -22,9 +22,9 @@ class Training extends PureComponent {
 					<BreadCrumbUI />
 					<Layout style={{ padding: '24px 0', background: '#fff' }}>
 						<Content style={{ padding: '0 24px', minHeight: 280 }}>
-							<Tags 
-								tips={Tips}
-							/>
+							<Tags tips={Tips} type={Type.get('0')} />
+							<Tags tips={Difficult} type={Type.get('1')} />
+							
 						</Content>
 					</Layout>
 				</Content>
@@ -35,13 +35,15 @@ class Training extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-	Tips:state.getIn(['training','tips']),	// 获取类型信息
+	Tips: state.getIn([ 'training', 'tips' ]), // 获取类型信息
+	Type: state.getIn([ 'training', 'type' ]), //获取标签类型
+	Difficult: state.getIn([ 'training', 'difficult' ])	//获取试题难度
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getTips(){
-		dispatch(actionCreators.getTips())
-	}
+	getTips() {
+		dispatch(actionCreators.getTips());
+	},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Training);

@@ -3,53 +3,43 @@
     "data": [
         {
             "id": "tip1",
-            "name": "web安全",
-            "selected":true
+            "name": "web安全"
         },
         {
             "id": "tip2",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip3",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip4",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip5",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip6",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip7",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip8",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip9",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         },
         {
             "id": "tip10",
-            "name": "web安全",
-            "selected":false
+            "name": "web安全"
         }
     ]
 }

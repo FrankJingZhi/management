@@ -7,8 +7,10 @@ export const TagWrapper = styled.div`
 
 export const TagTitle = styled.h5`
 	width: 10%;
-	text-align: center;
 	color: #808080;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
 
 export const TagTips = styled.ul`
@@ -16,10 +18,27 @@ export const TagTips = styled.ul`
 	margin-left: 3%;
 	width: 90%;
 	flex-wrap: wrap;
-	.TagTipsLi {
-		margin: 0 2%;
+	align-items: center;
+	.active{
+		background-color:#001529;
+		color: #fff;
 	}
-	.TagTipsText {
-		cursor: pointer;
-	}
+`;
+
+export const TagTipsLi = styled.li`
+	margin: 5px 2%;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	color: #2c3e50;
+	border-radius: 3px;
+	width: 84px;
+    height: 25px;
+    justify-content: center;
+	
+`;
+
+export const TagTipsText = styled.p`
+	cursor: pointer;
+	padding: 0 10px;
 `;
