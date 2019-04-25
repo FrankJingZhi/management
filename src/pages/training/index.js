@@ -7,6 +7,7 @@ import BreadCrumbUI from '../../common/layout/breadcrumb'; //引入公共布局�
 import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
 import Tags from './components/tags';
 import List from './components/list';
+import PaginationUI from './components/pagination';
 
 const { Content } = Layout;
 
@@ -15,7 +16,7 @@ class Training extends PureComponent {
 		this.props.getTips();
 	}
 	render() {
-		const { Tips, Type, Difficult } = this.props;
+		const { Tips, Type, Difficult,Exam } = this.props;
 		return (
 			<Layout>
 				<HeaderUI />
@@ -25,7 +26,8 @@ class Training extends PureComponent {
 						<Content style={{ padding: '0 24px', minHeight: 280 }}>
 							<Tags tips={Tips} type={Type.get('0')} />
 							<Tags tips={Difficult} type={Type.get('1')} />
-							<List />
+							<List exam={Exam} />
+							<PaginationUI />
 						</Content>
 					</Layout>
 				</Content>
@@ -38,7 +40,8 @@ class Training extends PureComponent {
 const mapStateToProps = (state) => ({
 	Tips: state.getIn([ 'training', 'tips' ]), // 获取类型信息
 	Type: state.getIn([ 'training', 'type' ]), //获取标签类型
-	Difficult: state.getIn([ 'training', 'difficult' ])	//获取试题难度
+	Difficult: state.getIn([ 'training', 'difficult' ]),	//获取试题难度
+	Exam: state.getIn(['training','trainingExam']),	//获取训练试卷信息
 });
 
 const mapDispatchToProps = (dispatch) => ({
