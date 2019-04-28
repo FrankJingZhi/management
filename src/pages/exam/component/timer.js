@@ -13,7 +13,7 @@ class Timer extends PureComponent{
                 value={deadline} 
                 format="HH:mm:ss" 
                 // onFinish={}
-                style={{textAlign:'right'}}
+                style={{textAlign:'right',marginBottom:'20px'}}
             />
         )
     }
