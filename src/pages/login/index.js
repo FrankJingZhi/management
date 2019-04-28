@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { LoginHeader, LoginHeaderDiv, LoginWrapper, LoginContent, LoginContentLeft, LoginContentRight } from './style';
 import { Button, Icon, Input } from 'antd'; //antd按需加载需要的组件
 import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
-import { Redirect } from 'react-router'; //引入Redirect组件用于js上的页面跳转
+import { Redirect } from 'react-router-dom'; //引入Redirect组件用于js上的页面跳转
 
 class Login extends PureComponent {
 	render() {
