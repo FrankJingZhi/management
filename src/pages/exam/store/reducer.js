@@ -12,7 +12,8 @@ import * as containts from './containts';
  * @param {} 将默认数据转化为immutable对象
  */
 const defaultState = fromJS({
-	
+	question: [], //题目
+	answer: 1 //用户选择的答案
 });
 
 /**
@@ -22,7 +23,10 @@ const defaultState = fromJS({
  */
 export default (state = defaultState, action) => {
 	switch (action.type) {
-		
+		case containts.GET_QUESTION:
+			return state.set('question', action.data);
+		case containts.CHANGE_OPTIONS:
+			return state.set('answer', action.data);
 		default:
 			return state;
 	}

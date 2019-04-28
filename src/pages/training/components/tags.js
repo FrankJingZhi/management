@@ -4,7 +4,6 @@ import { TagWrapper, TagTitle, TagTips, TagTipsLi, TagTipsText } from '../style'
 import { actionCreators } from '../store'; //从store文件夹引入actionCreators模块
 
 class Tags extends PureComponent {
-	componentDidMount() {}
 	render() {
 		const { tips, handleTipClick, tipCurrentIndex, type, handleDifClick, difCurrentIndex } = this.props;
 		return (
