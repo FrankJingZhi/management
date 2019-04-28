@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'; //react-redux
 import { BrowserRouter, Route } from 'react-router-dom'; //react路由
 import Login from './pages/login';
 import Training from './pages/training/index';
+import Exam from './pages/exam/index';
 
 class App extends Component {
 	render() {
@@ -13,6 +14,7 @@ class App extends Component {
 					<div>
 						<Route path="/" exact component={Login} />
 						<Route path="/training" exact component={Training}/>
+						<Route path="/exam" exact component={Exam}/>
 					</div>
 				</BrowserRouter>
 			</Provider>
