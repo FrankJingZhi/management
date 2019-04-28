@@ -5,4 +5,4 @@
  */
 
  export const GET_QUESTION = 'exam/GET_QUESTION';
- export const CHANGE_OPTIONS = 'exam/CHANGE_OPTIONS';
+//  export const CHANGE_OPTIONS = 'exam/CHANGE_OPTIONS';
