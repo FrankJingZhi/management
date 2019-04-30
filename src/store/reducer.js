@@ -3,14 +3,14 @@ import { reducer as LoginReducer } from '../pages/login/store';
 import { reducer as TrainingReducer } from '../pages/training/store';
 import { reducer as CommonReducer } from '../common/layout/store';
 import { reducer as ExamReducer } from '../pages/exam/store';
-import { reducer as ManageReducer } from '../pages/manage/store';
+import { reducer as UserManageReducer } from '../pages/userManage/store';
 
 const reducer = combineReducers({
 	login: LoginReducer,
 	training: TrainingReducer,
 	common: CommonReducer,
 	exam: ExamReducer,
-	manage: ManageReducer,
+	userManage: UserManageReducer,
 });
 
 export default reducer;
