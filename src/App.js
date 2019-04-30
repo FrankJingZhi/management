@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom'; //react路由
 import Login from './pages/login';
 import Training from './pages/training/index';
 import Exam from './pages/exam/index';
-import Manage from './pages/manage/index';
+import UserManage from './pages/userManage/index';
 
 class App extends Component {
 	render() {
@@ -16,7 +16,7 @@ class App extends Component {
 						<Route path="/" exact component={Login} />
 						<Route path="/training" exact component={Training}/>
 						<Route path="/exam" exact component={Exam}/>
-						<Route path="/manage" exact component={Manage}/>
+						<Route path="/userManage" exact component={UserManage}/>
 					</div>
 				</BrowserRouter>
 			</Provider>

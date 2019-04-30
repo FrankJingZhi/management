@@ -8,7 +8,7 @@ class SiderContentUI extends PureComponent {
 		const {SiderMenu} = this.props;
 		return (
 			<Sider width={200} style={{ background: '#fff' }}>
-				<Menu mode="inline" selectedKeys defaultSelectedKeys={[ '1' ]} style={{ height: '100%' }}>
+				<Menu mode="inline" defaultSelectedKeys={[ '1' ]} style={{ height: '100%' }}>
 					{SiderMenu.map((item,index)=>{
 						return <Menu.Item key={index}>{item.get('name')}</Menu.Item>
 					})}
