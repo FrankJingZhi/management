@@ -3,7 +3,7 @@ import store from './store'; //redux
 import { Provider } from 'react-redux'; //react-redux
 import { BrowserRouter,Switch, Route } from 'react-router-dom'; //react路由
 import Login from './pages/login';
-import Layout from './common/layout/index'
+import Layout from './common/layout/index';
 
 class App extends Component {
 	render() {

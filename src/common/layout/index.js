@@ -5,7 +5,8 @@ import { Layout, Table } from 'antd';
 import HeaderUI from './components/header'; //引入公共头部布局组件
 import FooterUI from './components/footer'; //引入公共底部布局组件
 import BreadCrumbUI from './components/breadcrumb'; //引入公共面包屑布局组件
-import trainingTest from '../../pages/trainingTest/index';  //
+import Training from '../../pages/training/index';  //
+import Test from '../../pages/test/index';  //
 import Manage from '../../pages/userManage/index';  //
 
 const { Content } = Layout;
@@ -23,9 +24,13 @@ class LayoutUI extends Component {
 					<Layout style={{ padding: '24px 0', background: '#fff' }}>
 						{/* 需要加载的路由组件 */}
 						{
-							RouterPath === 'manage' 
-							? <Route path={`${location.pathname}`} component={Manage} /> 
-							: <Route path={`${location.pathname}`} component={trainingTest} />					
+							RouterPath === 'training' && <Route path={`${location.pathname}`} component={Training} /> 
+						}
+						{
+							RouterPath === 'test' && <Route path={`${location.pathname}`} component={Test} /> 
+						}
+						{
+							RouterPath === 'manage' && <Route path={`${location.pathname}`} component={Manage} /> 
 						}
 					</Layout>
 				</Content>

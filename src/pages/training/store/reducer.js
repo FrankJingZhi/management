@@ -12,6 +12,16 @@ import * as containts from './containts';
  * @param {} 将默认数据转化为immutable对象
  */
 const defaultState = fromJS({
+	tips:[],
+	difCurrentIndex:0,
+	tipCurrentIndex:0,
+	type:['类型','难度'],
+	difficult:[
+		{id:'dif_0',name:'全部'},
+		{id:'dif_1',name:'简单'},
+		{id:'dif_2',name:'普通'},
+		{id:'dif_3',name:'困难'},
+	],
 	trainingExam:[
 		{id:'tr_img_1',name:'第一次训练'},
 		{id:'tr_img_2',name:'第二次训练'},
@@ -29,6 +39,15 @@ const defaultState = fromJS({
  */
 export default (state = defaultState, action) => {
 	switch (action.type) {
+		// 监听并获取标签名
+		case containts.GET_TIPS:
+			return state.set('tips', action.data);
+		// 监听并修改当前选中的标签
+		case containts.CHANGE_TIP:
+			return state.set('tipCurrentIndex', action.data);
+		// 监听并修改当前选中的难度
+		case containts.CHANGE_DIFFICULT:
+			return state.set('difCurrentIndex', action.data);
 		default:
 			return state;
 	}
