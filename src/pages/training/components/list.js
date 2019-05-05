@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 class List extends PureComponent {
 	render() {
 		const { exam,pathname } = this.props;
+		console.log('list_pathname,',pathname)
 		return (
 			<ListWrapper>
 				{exam.map((item) => {
 					return (
 						<ItemWrapper key={item.get('id')}>
-							<Link to={`${pathname}/exam/${item.get('name')}`}>
+							<Link to={{pathname:'/layout/exam',query:{examName:`${item.get('name')}`}}}>
 								<ItemWrapperTop>
 									<ItemImg src={imgSrc} />
 									<ItemTitle>{item.get('name')}</ItemTitle>

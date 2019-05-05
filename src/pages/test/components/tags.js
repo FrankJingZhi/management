@@ -11,7 +11,7 @@ class Tags extends PureComponent {
 				<TagTitle>{type}</TagTitle>
 				<TagTips>
 					{tips.map((item, index) => {
-						if (type == '类型') {
+						if (type === '类型') {
 							return (
 								<TagTipsLi
 									key={item.get('id')}
