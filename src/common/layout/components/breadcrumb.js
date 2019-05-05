@@ -3,12 +3,12 @@
  * @LastAuthor: Do not edit
  * @description: 面包屑导航
  * @since: 2019-04-22 14:52:48
- * @lastTime: 2019-04-22 15:03:47
+ * @lastTime: 2019-05-05 12:05:50
  */
 import React, { PureComponent } from 'react';
 import { Layout, Breadcrumb } from 'antd';
 import { connect } from 'react-redux';
-import './style.less';
+import '../style.less';
 const { Content } = Layout;
 
 class BreadCrumbUI extends PureComponent {

@@ -7,12 +7,19 @@
  */
 import axios from 'axios';
 import * as containts from './containts';
-import { fromJS } from 'immutable'; //
+import { fromJS } from 'immutable'; 
 
 /**
  * @Author: Frank
- * @lastTime: 2019-04-19 15:02:22
+ * @lastTime: 2019-05-05 13:07:18
  * @LastAuthor: Do not edit
- * @description: 
- * @since: 2019-04-19 12:31:13
+ * @description: 检查路由
+ * @since: 2019-05-05 12:58:11
  */
+export const checkRouter = (pathname) => {
+    pathname = pathname.replace(/^\/layout\/([(training)(test)(manage)])/,'$1');
+    return {
+        type: containts.CHECK_ROUTER,
+        data: fromJS(pathname)
+    }
+}

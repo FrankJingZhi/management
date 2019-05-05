@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom'; //引入Redirect组件用于js上�
 class Login extends PureComponent {
 	render() {
 		const { headerList, loginClick, changeTextValue, userName, password, status } = this.props;
-		if(status) return <Redirect to="/training"/>;
+		if(status) return <Redirect to="/layout/training"/>;
 		return (
 			<LoginWrapper>
 				{/* 登录页面头部--开始 */}

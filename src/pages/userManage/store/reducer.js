@@ -3,8 +3,6 @@
  * @Date: 2019-04-28 18:29:11
  * @param {*} 图书馆管理员的笔记本--
  */
-import React from 'react';
-import { Divider } from 'antd';
 import { fromJS } from 'immutable';
 import * as containts from './containts';
 
@@ -31,21 +29,11 @@ const defaultState = fromJS({
 		{
 			title: '绑定情况',
 			dataIndex: 'bingding'
-		},
-		{
-			title: '操作',
-			dataIndex: 'operation',
-			render: () => (
-				<span>
-					<a href="javascript:;">查看组员</a>
-					<Divider type="vertical" />
-					<a href="javascript:;">绑定试卷</a>
-					<Divider type="vertical" />
-					<a href="javascript:;">删除</a>
-				</span>
-			)
 		}
 	],
+	dataSource:[],	//表格数据
+	selectedRowKeys: [],	//被选中行
+	selectedRows: [],	//被选中行
 });
 
 /**
@@ -55,6 +43,12 @@ const defaultState = fromJS({
  */
 export default (state = defaultState, action) => {
 	switch (action.type) {
+		case containts.GET_TABLE_INFO:
+			return state.set('dataSource',action.data); //返回表格数据
+		case containts.CHANGE_SELECTED_ROW_KEYS:
+			return state.set('selectedRowKeys',action.data); 
+		case containts.CHANGE_SELECTED_ROWS:
+			return state.set('selectedRows',action.data); 
 		default:
 			return state;
 	}

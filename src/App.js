@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import store from './store'; //redux
 import { Provider } from 'react-redux'; //react-redux
-import { BrowserRouter, Route } from 'react-router-dom'; //react路由
+import { BrowserRouter,Switch, Route } from 'react-router-dom'; //react路由
 import Login from './pages/login';
-import Training from './pages/training/index';
-import Exam from './pages/exam/index';
-import UserManage from './pages/userManage/index';
+import Layout from './common/layout/index'
 
 class App extends Component {
 	render() {
 		return (
 			<Provider store={store}>
 				<BrowserRouter>
-					<div>
+					<Switch>
 						<Route path="/" exact component={Login} />
-						<Route path="/training" exact component={Training}/>
+						<Route path="/layout" component={Layout}/>
+						{/* <Route path="/training" exact component={Training}/>
 						<Route path="/exam" exact component={Exam}/>
-						<Route path="/userManage" exact component={UserManage}/>
-					</div>
+						<Route path="/userManage" exact component={UserManage}/> */}
+					</Switch>
 				</BrowserRouter>
 			</Provider>
 		);

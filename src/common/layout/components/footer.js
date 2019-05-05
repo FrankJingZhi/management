@@ -3,12 +3,12 @@
  * @LastAuthor: Do not edit
  * @description: 页面底部
  * @since: 2019-04-22 14:50:53
- * @lastTime: 2019-04-22 14:52:00
+ * @lastTime: 2019-05-05 12:06:03
  */
 import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
-import './style.less';
+import '../style.less';
 const { Footer } = Layout;
 
 class FooterUI extends PureComponent {

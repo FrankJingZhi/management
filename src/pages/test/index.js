@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
 import List from './components/list';
 
-class Training extends PureComponent {
+class Test extends PureComponent {
 	render() {
-		console.log('training,', this);
+		console.log('test,', this);
 		const { Tips, Type, Difficult, Exam } = this.props;
 		return <List exam={Exam} />;
 	}
 }
 
 const mapStateToProps = (state) => ({
-	Exam: state.getIn([ 'training', 'trainingExam' ]) //获取训练试卷信息
+	Exam: state.getIn([ 'test', 'testExam' ]) //获取训练试卷信息
 });
 
 const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Training);
+export default connect(mapStateToProps, mapDispatchToProps)(Test);
