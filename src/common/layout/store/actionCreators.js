@@ -11,13 +11,13 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-05 13:07:18
+ * @lastTime: 2019-05-05 17:40:29
  * @LastAuthor: Do not edit
  * @description: 检查路由
  * @since: 2019-05-05 12:58:11
  */
 export const checkRouter = (pathname) => {
-    pathname = pathname.replace(/^\/layout\/([(training)(test)(manage)])/,'$1');
+    pathname = pathname.split('/')
     return {
         type: containts.CHECK_ROUTER,
         data: fromJS(pathname)

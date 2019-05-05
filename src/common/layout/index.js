@@ -24,13 +24,13 @@ class LayoutUI extends Component {
 					<Layout style={{ padding: '24px 0', background: '#fff' }}>
 						{/* 需要加载的路由组件 */}
 						{
-							RouterPath === 'training' && <Route path={`${location.pathname}`} component={Training} /> 
+							RouterPath.includes('training') && <Route path={`${location.pathname}`} component={Training} /> 
 						}
 						{
-							RouterPath === 'test' && <Route path={`${location.pathname}`} component={Test} /> 
+							RouterPath.includes('test') && <Route path={`${location.pathname}`} component={Test} /> 
 						}
 						{
-							RouterPath === 'manage' && <Route path={`${location.pathname}`} component={Manage} /> 
+							RouterPath.includes('manage') && <Route path={`${location.pathname}`} component={Manage} /> 
 						}
 					</Layout>
 				</Content>

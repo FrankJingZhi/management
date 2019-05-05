@@ -3,7 +3,7 @@
  * @LastEditors: Do not edit
  * @description: 图书馆管理员的笔记本--
  * @since: 2019-04-18 17:36:48
- * @lastTime: 2019-05-05 13:07:28
+ * @lastTime: 2019-05-05 17:40:47
  */
 import { fromJS } from 'immutable';
 import * as containts from './containts';
@@ -28,7 +28,7 @@ const defaultState = fromJS({
 		{ id: 'sider_3', url: '/questionManage', name: '题目管理' }
 	],
 	// 路由地址
-	routerPath:''
+	routerPath:[]
 });
 
 /**
