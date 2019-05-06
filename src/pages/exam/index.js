@@ -44,7 +44,8 @@ class Exam extends PureComponent {
 	}
 
 	render() {
-		console.log('exam,',this)
+		// console.log('exam,',this)
+		// console.log('examName:',this.props.history.query)
 		const { Question } = this.props;
 		return (
 			<Content style={{ padding: '0 24px', minHeight: 280 }}>

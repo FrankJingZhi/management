@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { Layout, Table } from 'antd';
+import { Layout } from 'antd';
 import HeaderUI from './components/header'; //引入公共头部布局组件
 import FooterUI from './components/footer'; //引入公共底部布局组件
 import BreadCrumbUI from './components/breadcrumb'; //引入公共面包屑布局组件
@@ -16,7 +16,7 @@ class LayoutUI extends Component {
 	
 	render() {
 		console.log('props,', this);
-		const {location,RouterPath,match} = this.props;
+		const {location,RouterPath} = this.props;
 		return (
 			<Layout>
 				<HeaderUI pathname={location.pathname} />
@@ -31,7 +31,7 @@ class LayoutUI extends Component {
 							RouterPath.includes('test') && !RouterPath.includes('exam') && <Route path={`${location.pathname}`} component={Test} /> 
 						}
 						{
-							RouterPath.includes('exam') && <Route path={`${match.url}/exam`} component={Exam} /> 
+							RouterPath.includes('exam') && <Route path={`${location.pathname}`} component={Exam} /> 
 						}
 						{
 							RouterPath.includes('manage') && <Route path={`${location.pathname}`} component={Manage} /> 
@@ -47,8 +47,4 @@ const mapStateToProps = (state) => ({
 	RouterPath:state.getIn(['common','routerPath'])
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LayoutUI);
+export default connect(mapStateToProps, null)(LayoutUI);
