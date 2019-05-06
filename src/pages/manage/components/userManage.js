@@ -1,7 +1,7 @@
 import React, { PureComponent,Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Table } from 'antd';
 import ButtonGroup from './buttonGroup';
+import TableUI from './table';
 import { actionCreators } from '../store'; //从store文件夹引入actionCreators模块
 
 
@@ -11,22 +11,12 @@ class UserManage extends PureComponent {
 	}
 
 	render() {
-		const { columns, dataSource, changeSelectedRowKeys, changeSelectedRows } = this.props;
-		const columnsJS = columns.toJS();
-		const dataSourceJS = dataSource.toJS();
-
-		const rowSelection = {
-			onChange: (selectedRowKeys, selectedRows) => {
-				console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-				changeSelectedRowKeys(selectedRowKeys);
-				changeSelectedRows(selectedRows);
-			}
-		};
+		const { columns, dataSource} = this.props;
 
 		return (
 			<Fragment>
 				<ButtonGroup />
-				<Table rowSelection={rowSelection} columns={columnsJS} dataSource={dataSourceJS} />
+				<TableUI columns={columns} dataSource={dataSource} />
 			</Fragment>
 		);
 	}
@@ -41,12 +31,6 @@ const mapDispatchToProps = (dispatch) => ({
 	getTableInfo() {
 		dispatch(actionCreators.getTableInfo());
 	},
-	changeSelectedRowKeys(rowKeys) {
-		dispatch(actionCreators.changeSelectedRowKeys(rowKeys));
-	},
-	changeSelectedRows(rows) {
-		dispatch(actionCreators.changeSelectedRows(rows));
-	}
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserManage);
