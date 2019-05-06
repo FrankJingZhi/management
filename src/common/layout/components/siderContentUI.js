@@ -26,6 +26,4 @@ const mapStateToProps = (state) => ({
 	SiderMenu: state.getIn([ 'common', 'siderMenu' ]) //侧边栏数据
 });
 
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SiderContentUI);
+export default connect(mapStateToProps, null)(SiderContentUI);

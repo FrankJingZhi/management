@@ -3,7 +3,7 @@
  * @LastEditors: Do not edit
  * @description: 图书馆管理员的笔记本--
  * @since: 2019-04-18 17:36:48
- * @lastTime: 2019-05-05 17:40:47
+ * @lastTime: 2019-05-06 14:56:18
  */
 import { fromJS } from 'immutable';
 import * as containts from './containts';
@@ -18,17 +18,17 @@ const defaultState = fromJS({
 	headerItem: [
 		{ id: 'header_1', name: '训练', url: '/layout/training' },
 		{ id: 'header_2', name: '测试', url: '/layout/test' },
-		{ id: 'header_3', name: '管理', url: '/layout/manage' }
+		{ id: 'header_3', name: '管理', url: '/layout/manage/userManage' }
 	],
 	// 头部个人中心
 	dropDownMenu: [ { id: 'dropDown_1', name: '个人中心', url: '' }, { id: 'dropDown_2', name: '退出', url: '' } ],
 	siderMenu: [
-		{ id: 'sider_1', url: '/userManage', name: '用户管理' },
-		{ id: 'sider_2', url: '/examManage', name: '试卷管理' },
-		{ id: 'sider_3', url: '/questionManage', name: '题目管理' }
+		{ id: 'sider_1', url: '/layout/manage/userManage', name: '用户管理' },
+		{ id: 'sider_2', url: '/layout/manage/examManage', name: '试卷管理' },
+		{ id: 'sider_3', url: '/layout/manage/questionManage', name: '题目管理' }
 	],
 	// 路由地址
-	routerPath:[]
+	routerPath:[],
 });
 
 /**

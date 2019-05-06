@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent,Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Table, Button } from 'antd';
 import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
@@ -26,13 +26,10 @@ class UserManage extends PureComponent {
 		};
 
 		return (
-			<Layout style={{ padding: '24px 0', background: '#fff' }}>
-				<SiderContentUI />
-				<Content style={{ padding: '0 24px', minHeight: 280 }}>
-					<ButtonGroup />
-					<Table rowSelection={rowSelection} columns={columnsJS} dataSource={dataSourceJS} />
-				</Content>
-			</Layout>
+			<Fragment>
+				<ButtonGroup />
+				<Table rowSelection={rowSelection} columns={columnsJS} dataSource={dataSourceJS} />
+			</Fragment>
 		);
 	}
 }
