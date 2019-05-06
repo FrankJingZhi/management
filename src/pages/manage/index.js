@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { Switch, Route } from 'react-router-dom'; //react路由
 import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
-import UserManage from '../userManage/index'; //用户管理组件
+import UserManage from './components/userManage'; //用户管理组件
 
 const { Content } = Layout;
 

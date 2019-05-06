@@ -1,11 +1,9 @@
 import React, { PureComponent,Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Table, Button } from 'antd';
-import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
-import ButtonGroup from './components/buttonGroup';
-import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
+import { Table } from 'antd';
+import ButtonGroup from './buttonGroup';
+import { actionCreators } from '../store'; //从store文件夹引入actionCreators模块
 
-const { Content } = Layout;
 
 class UserManage extends PureComponent {
 	componentDidMount() {
@@ -35,8 +33,8 @@ class UserManage extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-	columns: state.getIn([ 'userManage', 'columns' ]),
-	dataSource: state.getIn([ 'userManage', 'dataSource' ])
+	columns: state.getIn([ 'manage', 'columns' ]),
+	dataSource: state.getIn([ 'manage', 'dataSource' ])
 });
 
 const mapDispatchToProps = (dispatch) => ({
