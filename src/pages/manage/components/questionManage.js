@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import ButtonGroup from './buttonGroup';
 import TableUI from './table';
 
-class UserManage extends PureComponent {
+class QuestionManage extends PureComponent {
 	render() {
 		const { RouterPath } = this.props;
 		return (
@@ -14,4 +14,4 @@ class UserManage extends PureComponent {
 	}
 }
 
-export default UserManage;
+export default QuestionManage;

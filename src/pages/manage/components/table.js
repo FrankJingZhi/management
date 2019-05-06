@@ -5,6 +5,11 @@ import { actionCreators } from '../store'; //从store文件夹引入actionCreato
 
 
 class TableUI extends PureComponent {
+	componentDidMount() {
+        const {RouterPath} = this.props;
+		this.props.getTableInfo(RouterPath);
+		this.props.getColumnsInfo(RouterPath);
+	}
 
 	render() {
 		const { columns, dataSource, changeSelectedRowKeys, changeSelectedRows } = this.props;
@@ -25,13 +30,24 @@ class TableUI extends PureComponent {
 	}
 }
 
+const mapStateToProps = (state) => ({
+	columns: state.getIn([ 'manage', 'columns' ]),
+    dataSource: state.getIn([ 'manage', 'dataSource' ]),
+});
+
 const mapDispatchToProps = (dispatch) => ({
 	changeSelectedRowKeys(rowKeys) {
 		dispatch(actionCreators.changeSelectedRowKeys(rowKeys));
 	},
 	changeSelectedRows(rows) {
 		dispatch(actionCreators.changeSelectedRows(rows));
-	}
+	},
+	getTableInfo(data) {
+		dispatch(actionCreators.getTableInfo(data));
+    },
+    getColumnsInfo(data){
+        dispatch(actionCreators.getColumnsInfo(data))
+    }
 });
 
-export default connect(null, mapDispatchToProps)(TableUI);
+export default connect(mapStateToProps, mapDispatchToProps)(TableUI);

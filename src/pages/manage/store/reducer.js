@@ -13,24 +13,7 @@ import * as containts from './containts';
  */
 const defaultState = fromJS({
 	// table表格
-	columns: [
-		{
-			title: '用户组',
-			dataIndex: 'userGroup'
-		},
-		{
-			title: '组管理员',
-			dataIndex: 'groupManager'
-		},
-		{
-			title: '组员',
-			dataIndex: 'groupMember'
-		},
-		{
-			title: '绑定情况',
-			dataIndex: 'bingding'
-		}
-	],
+	columns: [],
 	dataSource:[],	//表格数据
 	selectedRowKeys: [],	//被选中行
 	selectedRows: [],	//被选中行
@@ -45,6 +28,8 @@ export default (state = defaultState, action) => {
 	switch (action.type) {
 		case containts.GET_TABLE_INFO:
 			return state.set('dataSource',action.data); //返回表格数据
+		case containts.GET_COLUMNS_INFO:
+			return state.set('columns',action.data); //返回表格数据
 		case containts.CHANGE_SELECTED_ROW_KEYS:
 			return state.set('selectedRowKeys',action.data); 
 		case containts.CHANGE_SELECTED_ROWS:

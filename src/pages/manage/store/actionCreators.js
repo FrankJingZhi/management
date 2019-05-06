@@ -11,18 +11,32 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-04-30 18:31:39
+ * @lastTime: 2019-05-06 16:48:39
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
  */
-export const getTableInfo = ()=>{
+export const getTableInfo = (RouterPath)=>{
     return(dispatch)=>{
-        axios.get('/api/manage/userInfo.json')
-        .then((res)=>{
-            const data = res.data.data;
-            dispatch(getTableInfoAction(data))
-        })
+        if(RouterPath.includes('userManage')){
+            axios.get('/api/manage/userInfo.json')
+            .then((res)=>{
+                const data = res.data.data;
+                dispatch(getTableInfoAction(data))
+            })
+        }else if(RouterPath.includes('examManage')){
+            axios.get('/api/manage/examInfo.json')
+            .then((res)=>{
+                const data = res.data.data;
+                dispatch(getTableInfoAction(data))
+            })
+        }else if(RouterPath.includes('questionManage')){
+            axios.get('/api/manage/questionInfo.json')
+            .then((res)=>{
+                const data = res.data.data;
+                dispatch(getTableInfoAction(data))
+            })
+        }
     }
 }
 const getTableInfoAction = (data) =>({
@@ -46,3 +60,79 @@ export const changeSelectedRows = (data) =>({
     data: fromJS(data)
 })
 
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 获取用户、试卷、题目表头
+ * @since: 2019-05-06 16:23:40
+ */
+export const getColumnsInfo = (data) =>{
+    let columns = [];
+    if(data.includes('userManage')){
+        columns = [
+            {
+                title: '用户组',
+                dataIndex: 'userGroup'
+            },
+            {
+                title: '组管理员',
+                dataIndex: 'groupManager'
+            },
+            {
+                title: '组员',
+                dataIndex: 'groupMember'
+            },
+            {
+                title: '绑定情况',
+                dataIndex: 'bingding'
+            }
+        ]
+    }else if(data.includes('examManage')){
+        columns = [
+            {
+                title: '试卷名',
+                dataIndex: 'examName'
+            },
+            {
+                title: '类型',
+                dataIndex: 'type'
+            },
+            {
+                title: '难度',
+                dataIndex: 'difficult'
+            },
+            {
+                title: '题目数',
+                dataIndex: 'questionNumbers'
+            },
+            {
+                title: '修改时间',
+                dataIndex: 'modifyTime'
+            },
+        ]
+    }else if(data.includes('questionManage')){
+        columns = [
+            {
+                title: '题目',
+                dataIndex: 'question'
+            },
+            {
+                title: '类型',
+                dataIndex: 'type'
+            },
+            {
+                title: '标签',
+                dataIndex: 'tip'
+            },
+            {
+                title: '修改时间',
+                dataIndex: 'modifyTime'
+            }
+        ]
+    }
+    return{
+        type: containts.GET_COLUMNS_INFO,
+        data: fromJS(columns)
+    }
+}
