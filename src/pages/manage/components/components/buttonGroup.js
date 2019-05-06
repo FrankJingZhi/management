@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal } from 'antd';
-import { BtnGroupWrapper } from '../style';
-import * as actionCreators from '../store';
+import { BtnGroupWrapper } from '../../style';
+import * as actionCreators from '../../store';
 import {Redirect} from 'react-router-dom';
 
 class ButtonGroup extends PureComponent {
@@ -25,6 +25,9 @@ class ButtonGroup extends PureComponent {
 		const { selectedRowKeys,selectedRows } = this.props;
 		return (
 			<BtnGroupWrapper>
+				<Button type="primary" className="btn" >
+					添加用户组
+				</Button>
 				<Button type="primary" className="btn" onClick={()=>this.checkSize('team',selectedRows)}>
 					查看组员
 				</Button>

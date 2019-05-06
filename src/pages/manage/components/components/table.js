@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
-import { actionCreators } from '../store'; //从store文件夹引入actionCreators模块
+import { actionCreators } from '../../store'; //从store文件夹引入actionCreators模块
 
 
 class TableUI extends PureComponent {
