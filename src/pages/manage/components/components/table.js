@@ -33,6 +33,7 @@ class TableUI extends PureComponent {
 const mapStateToProps = (state) => ({
 	columns: state.getIn([ 'manage', 'columns' ]),
     dataSource: state.getIn([ 'manage', 'dataSource' ]),
+	RouterPath: state.getIn([ 'common', 'routerPath' ]),
 });
 
 const mapDispatchToProps = (dispatch) => ({

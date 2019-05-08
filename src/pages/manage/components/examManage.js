@@ -4,11 +4,10 @@ import TableUI from './components/table';
 
 class ExamManage extends PureComponent {
 	render() {
-		const { RouterPath } = this.props;
 		return (
 			<Fragment>
 				<ButtonGroup />
-				<TableUI RouterPath={RouterPath} />
+				<TableUI />
 			</Fragment>
 		);
 	}

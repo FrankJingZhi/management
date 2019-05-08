@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-06 16:48:39
+ * @lastTime: 2019-05-08 11:06:11
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -136,3 +136,15 @@ export const getColumnsInfo = (data) =>{
         data: fromJS(columns)
     }
 }
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 用来判断是否弹出添加组员的对话框的flag
+ * @since: 2019-05-08 10:29:54
+ */
+export const addHandleClick = ()=>({
+    type: containts.ADD_HANDLE_CLICK,
+    data: fromJS(true)
+})

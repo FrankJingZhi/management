@@ -17,6 +17,7 @@ const defaultState = fromJS({
 	dataSource:[],	//表格数据
 	selectedRowKeys: [],	//被选中行
 	selectedRows: [],	//被选中行
+	addFlag:false,	//判断是否弹出添加组员的对话框
 });
 
 /**
@@ -34,6 +35,8 @@ export default (state = defaultState, action) => {
 			return state.set('selectedRowKeys',action.data); 
 		case containts.CHANGE_SELECTED_ROWS:
 			return state.set('selectedRows',action.data); 
+		case containts.ADD_HANDLE_CLICK:
+			return state.set('addFlag',action.data); 
 		default:
 			return state;
 	}
