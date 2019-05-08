@@ -23,18 +23,6 @@ class LayoutUI extends Component {
 					<BreadCrumbUI />
 					<Layout style={{ padding: '24px 0', background: '#fff' }}>
 						{/* 需要加载的路由组件 */}
-						{/* {
-							RouterPath.includes('training') && !RouterPath.includes('exam') && <Route path={`${location.pathname}`} component={Training} /> 
-						}
-						{
-							RouterPath.includes('test') && !RouterPath.includes('exam') && <Route path={`${location.pathname}`} component={Test} /> 
-						}
-						{
-							RouterPath.includes('exam') && <Route path={`${location.pathname}`} component={Exam} /> 
-						}
-						{
-							RouterPath.includes('manage') && <Route path={`${location.pathname}`} component={Manage} /> 
-						} */}
 						<Switch>
 							<Route path={`${match.url}/training`} exact component={Training} />
 							<Route path={`${match.url}/test`} exact component={Test} />
