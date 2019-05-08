@@ -5,6 +5,11 @@ import { BtnGroupWrapper } from '../../style';
 import { actionCreators } from '../../store';
 
 class ButtonGroup extends PureComponent {
+	componentDidMount(){
+		const {RouterPath,changeAddBtnName} = this.props;
+		changeAddBtnName(RouterPath);
+	}
+
 	checkSize(type, rows) {
 		if (rows.size === 1) {
 			const rowsJS = rows.toJS();
@@ -19,16 +24,16 @@ class ButtonGroup extends PureComponent {
 	}
 
 	render() {
-		const { selectedRowKeys, selectedRows, addHandleClick } = this.props;
+		const { SelectedRowKeys, SelectedRows, showAddHandleClick,AddBtnName } = this.props;
 		return (
 			<BtnGroupWrapper>
-				<Button type="primary" className="btn" onClick={() => addHandleClick()}>
-					添加用户组
+				<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+					{AddBtnName}
 				</Button>
-				<Button type="primary" className="btn" onClick={() => this.checkSize('team', selectedRows)}>
+				<Button type="primary" className="btn" onClick={() => this.checkSize('team', SelectedRows)}>
 					查看组员
 				</Button>
-				<Button type="primary" className="btn" onClick={() => this.checkSize('exam', selectedRows)}>
+				<Button type="primary" className="btn" onClick={() => this.checkSize('exam', SelectedRows)}>
 					绑定试卷
 				</Button>
 				<Button type="danger" className="btn" onClick={this.start}>
@@ -40,13 +45,18 @@ class ButtonGroup extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-	selectedRowKeys: state.getIn([ 'manage', 'selectedRowKeys' ]),
-	selectedRows: state.getIn([ 'manage', 'selectedRows' ])
+	SelectedRowKeys: state.getIn([ 'manage', 'selectedRowKeys' ]),
+	SelectedRows: state.getIn([ 'manage', 'selectedRows' ]),
+	RouterPath: state.getIn(['common','routerPath']),
+	AddBtnName: state.getIn(['manage','addBtnName'])
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	addHandleClick() {
-		dispatch(actionCreators.addHandleClick());
+	showAddHandleClick() {
+		dispatch(actionCreators.showAddHandleClick());
+	},
+	changeAddBtnName(RouterPath){
+		dispatch(actionCreators.changeAddBtnName(RouterPath));
 	}
 });
 

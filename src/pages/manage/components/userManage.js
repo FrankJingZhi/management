@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import ButtonGroup from './components/buttonGroup';
 import TableUI from './components/table';
+import UserModal from './components/userModal';
 
 class UserManage extends PureComponent {
 	render() {
@@ -8,6 +9,7 @@ class UserManage extends PureComponent {
 			<Fragment>
 				<ButtonGroup />
 				<TableUI />
+				<UserModal />
 			</Fragment>
 		);
 	}

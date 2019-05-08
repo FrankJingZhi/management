@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-08 11:06:11
+ * @lastTime: 2019-05-08 13:05:08
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -144,7 +144,35 @@ export const getColumnsInfo = (data) =>{
  * @description: 用来判断是否弹出添加组员的对话框的flag
  * @since: 2019-05-08 10:29:54
  */
-export const addHandleClick = ()=>({
-    type: containts.ADD_HANDLE_CLICK,
+export const showAddHandleClick = ()=>({
+    type: containts.SHOW_ADD_HANDLE_CLICK,
     data: fromJS(true)
 })
+export const closeAddHandleClick = ()=>({
+    type: containts.CLOSE_ADD_HANDLE_CLICK,
+    data: fromJS(false)
+})
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 判断当前是在哪个页面下，以此来改变添加按钮的名字
+ * @since: 2019-05-08 12:43:19
+ */
+export const changeAddBtnName = (RouterPath) =>{
+    let data = '';
+    if(RouterPath.includes('userManage')&&!RouterPath.includes('selfManage')){
+        data = '添加用户组'
+    }else if(RouterPath.includes('selfManage')){
+        data = '添加用户'
+    }else if(RouterPath.includes('examManage')){
+        data = '添加试卷'
+    }else if(RouterPath.includes('questionManage')){
+        data = '添加题目'
+    }
+    return {
+        type: containts.CHANGE_ADD_BTN_NAME,
+        data: fromJS(data)
+    }
+}
