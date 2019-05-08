@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import { Button, Modal } from 'antd';
 import { BtnGroupWrapper } from '../../style';
 import * as actionCreators from '../../store';
-import {Redirect} from 'react-router-dom';
 
 class ButtonGroup extends PureComponent {
 	checkSize(type,rows) {
 		if (rows.size === 1) {
             const rowsJS = rows.toJS();
             console.log(rowsJS)
-            // type ===  'team' ? 
-            // <Redirect to={`/userManage/selfManage?${rowsJS[0].userGroup}`}/>:
-            // <Redirect to={`/userManage/selfManage?${rowsJS[0].userGroup}`}/>
+			// 路由跳转
+			
 		}else {
             Modal.warning({
 				title: '警告',
@@ -43,8 +41,8 @@ class ButtonGroup extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-	selectedRowKeys: state.getIn([ 'userManage', 'selectedRowKeys' ]),
-	selectedRows: state.getIn([ 'userManage', 'selectedRows' ]),
+	selectedRowKeys: state.getIn([ 'manage', 'selectedRowKeys' ]),
+	selectedRows: state.getIn([ 'manage', 'selectedRows' ]),
 });
 
 const mapDispatchToProps = (dispatch) => ({
