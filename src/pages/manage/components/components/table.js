@@ -6,8 +6,8 @@ import { actionCreators } from '../../store'; //从store文件夹引入actionCre
 
 class TableUI extends PureComponent {
 	componentDidMount() {
-        const {RouterPath,getTableInfo,getColumnsInfo} = this.props;
-		getTableInfo(RouterPath);
+        const {RouterPath,getTableInfo,getColumnsInfo,userGroup} = this.props;
+		userGroup ? getTableInfo(RouterPath,userGroup) : getTableInfo(RouterPath);
 		getColumnsInfo(RouterPath);
 	}
 

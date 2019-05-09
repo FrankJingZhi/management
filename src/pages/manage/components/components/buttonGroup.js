@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Button, Modal } from 'antd';
 import { BtnGroupWrapper } from '../../style';
 import { actionCreators } from '../../store';
@@ -15,6 +16,12 @@ class ButtonGroup extends PureComponent {
 			const rowsJS = rows.toJS();
 			console.log(rowsJS);
 			// 路由跳转
+			this.props.history.push({
+				pathname:'/layout/manage/userManage/selfManage',
+				query:{
+					userGroup:rowsJS[0].userGroup
+				}
+			})
 		} else {
 			Modal.warning({
 				title: '警告',
@@ -24,6 +31,7 @@ class ButtonGroup extends PureComponent {
 	}
 
 	render() {
+		console.log('btnGroup:',this)
 		const { SelectedRowKeys, SelectedRows, showAddHandleClick,AddBtnName } = this.props;
 		return (
 			<BtnGroupWrapper>
@@ -35,6 +43,12 @@ class ButtonGroup extends PureComponent {
 				</Button>
 				<Button type="primary" className="btn" onClick={() => this.checkSize('exam', SelectedRows)}>
 					绑定试卷
+				</Button>
+				<Button type="primary" className="btn">
+					编辑
+				</Button>
+				<Button type="primary" className="btn">
+					统计信息
 				</Button>
 				<Button type="danger" className="btn" onClick={this.start}>
 					删除
@@ -57,7 +71,7 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 	changeAddBtnName(RouterPath){
 		dispatch(actionCreators.changeAddBtnName(RouterPath));
-	}
+	},
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonGroup);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ButtonGroup));

@@ -2,31 +2,27 @@
     "data": [
 		{
 			"key": "1",
-			"userGroup": "开源一班",
-			"groupManager": "班级管理员",
-			"groupMember": "10/30",
-			"bingding": "比赛:1;训练:2"
+			"userName": "牛小二",
+			"class": "开源一班",
+			"modifyTime": "2019-5-8 17:04"
 		},
 		{
 			"key": "2",
-			"userGroup": "开源二班",
-			"groupManager": "班级管理员",
-			"groupMember": "20/30",
-			"bingding": "比赛:5;训练:3"
+			"userName": "王老五",
+			"class": "开源二班",
+			"modifyTime": "2019-5-8 17:04"
 		},
 		{
 			"key": "3",
-			"userGroup": "开源三班",
-			"groupManager": "班级管理员",
-			"groupMember": "24/30",
-			"bingding": "比赛:2;训练:2"
+			"userName": "赵四",
+			"class": "开源三班",
+			"modifyTime": "2019-5-8 17:04"
 		},
 		{
 			"key": "4",
-			"userGroup": "开源四班",
-			"groupManager": "班级管理员",
-			"groupMember": "29/30",
-			"bingding": "比赛:3;训练:4"
+			"userName": "刘能",
+			"class": "开源四班",
+			"modifyTime": "2019-5-8 17:04"
 		}
 	]
 }
