@@ -6,9 +6,10 @@ import { actionCreators } from '../../store'; //从store文件夹引入actionCre
 
 class TableUI extends PureComponent {
 	componentDidMount() {
-        const {RouterPath,getTableInfo,getColumnsInfo,userGroup} = this.props;
+        const {RouterPath,getTableInfo,getColumnsInfo,userGroup,clearSelectedRowsAndKeys} = this.props;
 		userGroup ? getTableInfo(RouterPath,userGroup) : getTableInfo(RouterPath);
 		getColumnsInfo(RouterPath);
+		clearSelectedRowsAndKeys();
 	}
 
 	render() {
@@ -48,7 +49,10 @@ const mapDispatchToProps = (dispatch) => ({
     },
     getColumnsInfo(data){
         dispatch(actionCreators.getColumnsInfo(data))
-    }
+	},
+	clearSelectedRowsAndKeys(){
+		dispatch(actionCreators.clearSelectedRowsAndKeys())
+	}
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableUI);

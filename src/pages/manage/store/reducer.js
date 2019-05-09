@@ -18,7 +18,7 @@ const defaultState = fromJS({
 	selectedRowKeys: [], //被选中行
 	selectedRows: [], //被选中行
 	showUserAddModal: false, //判断是否弹出添加组员的对话框
-	addBtnName: '' //添加按钮的名字
+	addBtnName: '', //添加按钮的名字
 });
 
 /**
@@ -40,6 +40,9 @@ export default (state = defaultState, action) => {
 		//被选中行数据
 		case containts.CHANGE_SELECTED_ROWS:
 			return state.set('selectedRows', action.data);
+		//重置被选中行数据
+		case containts.CLEAR_ROWS_KEYS:
+			return state.merge({'selectedRowKeys':action.data,'selectedRows':action.data});
 		//展示userModal
 		case containts.SHOW_ADD_HANDLE_CLICK:
 			return state.set('showUserAddModal', action.data);
