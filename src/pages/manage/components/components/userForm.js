@@ -1,5 +1,5 @@
 import React,{PureComponent} from 'react';
-import { Form, Input,InputNumber , Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { Form, Input,InputNumber } from 'antd';
 
 class RegistrationForm extends PureComponent {
 	state = {
