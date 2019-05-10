@@ -11,14 +11,18 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-09 13:38:16
+ * @lastTime: 2019-05-10 11:07:15
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
  */
-export const getTableInfo = (RouterPath,userGroup) => {
+export const getTableInfo = (RouterPath, userGroup) => {
 	return (dispatch) => {
-		if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage')) {
+		if (
+			RouterPath.includes('userManage') &&
+			!RouterPath.includes('selfManage') &&
+			!RouterPath.includes('examBind')
+		) {
 			axios.get('/api/manage/groupInfo.json').then((res) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
@@ -33,8 +37,13 @@ export const getTableInfo = (RouterPath,userGroup) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
 			});
-		}	else if (RouterPath.includes('selfManage')) {
+		} else if (RouterPath.includes('selfManage')) {
 			axios.get('/api/manage/userInfo.json').then((res) => {
+				const data = res.data.data;
+				dispatch(getTableInfoAction(data));
+			});
+		} else if (RouterPath.includes('examBind')) {
+			axios.get('/api/manage/examBindInfo.json').then((res) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
 			});
@@ -71,7 +80,7 @@ export const changeSelectedRows = (data) => ({
  */
 export const getColumnsInfo = (data) => {
 	let columns = [];
-	if (data.includes('userManage') && !data.includes('selfManage')) {
+	if (data.includes('userManage') && !data.includes('selfManage') && !data.includes('examBind')) {
 		columns = [
 			{
 				title: '用户组',
@@ -132,7 +141,7 @@ export const getColumnsInfo = (data) => {
 				dataIndex: 'modifyTime'
 			}
 		];
-	} else if(data.includes('selfManage')){
+	} else if (data.includes('selfManage')) {
 		columns = [
 			{
 				title: '用户名',
@@ -145,6 +154,33 @@ export const getColumnsInfo = (data) => {
 			{
 				title: '修改时间',
 				dataIndex: 'modifyTime'
+			}
+		];
+	} else if (data.includes('examBind')) {
+		columns = [
+			{
+				title: '试卷名',
+				dataIndex: 'examName'
+			},
+			{
+				title: '类型',
+				dataIndex: 'type'
+			},
+			{
+				title: '难度',
+				dataIndex: 'difficult'
+			},
+			{
+				title: '题目数',
+				dataIndex: 'questionNumbers'
+			},
+			{
+				title: '总分',
+				dataIndex: 'totalScore'
+			},
+			{
+				title: '测试时间',
+				dataIndex: 'testTime'
 			}
 		];
 	}
@@ -179,7 +215,7 @@ export const closeAddHandleClick = () => ({
  */
 export const changeAddBtnName = (RouterPath) => {
 	let data = '';
-	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage')) {
+	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage') && !RouterPath.includes('examBind')) {
 		data = '添加用户组';
 	} else if (RouterPath.includes('selfManage')) {
 		data = '添加用户';
@@ -187,6 +223,8 @@ export const changeAddBtnName = (RouterPath) => {
 		data = '添加试卷';
 	} else if (RouterPath.includes('questionManage')) {
 		data = '添加题目';
+	} else if (RouterPath.includes('examBind')) {
+		data = '添加试卷';
 	}
 	return {
 		type: containts.CHANGE_ADD_BTN_NAME,
@@ -194,7 +232,7 @@ export const changeAddBtnName = (RouterPath) => {
 	};
 };
 
-export const clearSelectedRowsAndKeys = () =>({
-	type:containts.CLEAR_ROWS_KEYS,
+export const clearSelectedRowsAndKeys = () => ({
+	type: containts.CLEAR_ROWS_KEYS,
 	data: fromJS([])
-})
+});

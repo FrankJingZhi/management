@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import { Switch, Route } from 'react-router-dom'; //react路由
 import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
-import UserManage from './components/userManage'; //用户管理组件
+import UserManage from './components/userManage'; //用户组管理组件
 import SelfManage from './components/selfManage'; //用户管理组件
+import ExamBind from './components/examBind'; //试卷绑定组件
 import ExamManage from './components/examManage'; //试卷管理组件
 import QuestionManage from './components/questionManage'; //题目管理组件
 
@@ -21,6 +22,7 @@ class Manage extends PureComponent {
 					<Switch>
 						<Route path={`${match.url}/userManage`} exact component={UserManage} />
 						<Route path={`${match.url}/userManage/selfManage`} exact component={SelfManage} />
+						<Route path={`${match.url}/userManage/examBind`} exact component={ExamBind} />
 						<Route path={`${match.url}/examManage`} exact component={ExamManage} />
 						<Route path={`${match.url}/questionManage`} exact component={QuestionManage} />
 					</Switch>
