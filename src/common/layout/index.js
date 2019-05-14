@@ -17,7 +17,7 @@ class LayoutUI extends Component {
 		console.log('props,', this, this.props.match.url);
 		const { location, RouterPath, match } = this.props;
 		return (
-			<Layout>
+			<Layout className="wrapper">
 				<HeaderUI pathname={location.pathname} />
 				<Content style={{ padding: '0 50px' }}>
 					<BreadCrumbUI />
