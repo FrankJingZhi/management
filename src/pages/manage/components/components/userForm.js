@@ -1,13 +1,13 @@
-import React,{PureComponent} from 'react';
-import { Form, Input,InputNumber } from 'antd';
+import React, { PureComponent } from 'react';
+import { Form, Input, Button, InputNumber } from 'antd';
 
 class RegistrationForm extends PureComponent {
 	state = {
-		confirmDirty: false,
-		autoCompleteResult: []
+		confirmDirty: false
 	};
 
 	handleSubmit = (e) => {
+		console.log('userForm:', this, e);
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
@@ -38,10 +38,8 @@ class RegistrationForm extends PureComponent {
 		callback();
 	};
 
-
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { autoCompleteResult } = this.state;
 
 		const formItemLayout = {
 			labelCol: {
@@ -62,9 +60,9 @@ class RegistrationForm extends PureComponent {
 				<Form.Item label="人数上限">
 					{getFieldDecorator('uppermembers', {
 						rules: [ { required: true, message: 'Please input your nickname!', whitespace: true } ]
-					})(<InputNumber min={1} max={10} style={{ width: '100%' }}/>)}
+					})(<InputNumber min={1} max={10} style={{ width: '100%' }} />)}
 				</Form.Item>
-                <Form.Item label="组管理员名">
+				<Form.Item label="组管理员名">
 					{getFieldDecorator('nickname', {
 						rules: [ { required: true, message: 'Please input your nickname!', whitespace: true } ]
 					})(<Input />)}
@@ -99,6 +97,11 @@ class RegistrationForm extends PureComponent {
 					{getFieldDecorator('phone', {
 						rules: [ { required: true, message: 'Please input your phone number!' } ]
 					})(<Input />)}
+				</Form.Item>
+				<Form.Item>
+					<Button type="primary" htmlType="submit">
+						确定
+					</Button>
 				</Form.Item>
 			</Form>
 		);
