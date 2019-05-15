@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 需要派发的action
  * @since: 2019-04-16 10:47:01
- * @lastTime: 2019-04-16 17:56:33
+ * @lastTime: 2019-05-15 14:42:30
  */
 import axios from 'axios';
 import * as containts from './containts';
@@ -31,7 +31,7 @@ export const changeTextValue = (type,value) => {
  */
 export const loginClick = (userName, password) => {
 	return (dispatch) => {
-        axios.get('/api/login/login.json')
+        axios.get('http://localhost:8080/user/check')
 		// axios({
 		// 	method: 'post',
 		// 	url: '/api/login/login.json',
@@ -41,6 +41,7 @@ export const loginClick = (userName, password) => {
 		// 	}
 		// })
 			.then((res) => {
+				console.log('login:',res)
                 let userInfo = {};
                 const data = res.data;
 				if (data.status) {
