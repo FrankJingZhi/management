@@ -11,15 +11,22 @@ class ButtonGroup extends PureComponent {
 		changeAddBtnName(RouterPath);
 	}
 
-	//查看组员--通过判断是否选中一条数据来做不同的操作
-	checkMembers(rows) {
+	//查看组员or编辑试卷--通过判断是否选中一条数据来做不同的操作
+	checkMembers(type,rows) {
 		if (rows.size === 1) {
 			const rowsJS = rows.toJS();
-			window.sessionStorage.setItem('userGroup',rowsJS[0].userGroup)
 			// 路由跳转
-			this.props.history.push({
-				pathname: `/layout/manage/userManage/selfManage`
-			});
+			if(type === 'editExam'){
+				window.sessionStorage.setItem('examName',rowsJS[0].examName)
+				this.props.history.push({
+					pathname: `/layout/manage/examManage/editExam`
+				});
+			}else if(type === 'checkMembers'){
+				window.sessionStorage.setItem('userGroup',rowsJS[0].userGroup)
+				this.props.history.push({
+					pathname: `/layout/manage/userManage/selfManage`
+				});
+			}
 		} else {
 			Modal.warning({
 				title: '警告',
@@ -32,7 +39,7 @@ class ButtonGroup extends PureComponent {
 	bindExam(type,rows) {
 		if (rows.size >= 1) {
 			const rowsJS = rows.toJS();
-			console.log('bindExam:',rowsJS);
+			// console.log('bindExam:',rowsJS);
 			// 路由跳转
 			// 后续操作需要补充
 			if(type === 'group'){
@@ -51,6 +58,7 @@ class ButtonGroup extends PureComponent {
 		}
 	}
 
+
 	render() {
 		console.log('btnGroup:', this);
 		const { SelectedRowKeys, SelectedRows, showAddHandleClick, AddBtnName, RouterPath } = this.props;
@@ -62,7 +70,7 @@ class ButtonGroup extends PureComponent {
 				{/* userManage路由下 */}
 				{RouterPath.includes('userManage') && !RouterPath.includes('selfManage') && !RouterPath.includes('examBind') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.checkMembers(SelectedRows)}>
+						<Button type="primary" className="btn" onClick={() => this.checkMembers('checkMembers',SelectedRows)}>
 							查看组员
 						</Button>
 						<Button type="primary" className="btn" onClick={() => this.bindExam('group', SelectedRows)}>
@@ -99,8 +107,8 @@ class ButtonGroup extends PureComponent {
 					''
 				)}
 				{/* examManage路由下 */}
-				{RouterPath.includes('examManage') ? (
-					<Button type="primary" className="btn">
+				{RouterPath.includes('examManage') && !RouterPath.includes('editExam') ? (
+					<Button type="primary" className="btn" onClick={()=>this.checkMembers('editExam',SelectedRows)}>
 						编辑试卷
 					</Button>
 				) : (

@@ -2,21 +2,19 @@ import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import ButtonGroup from './components/buttonGroup';
 import TableUI from './components/table';
-import UserModal from './components/userModal';
 
-class ExamBind extends PureComponent {
+class EditExam extends PureComponent {
 	render() {
-		console.log('ExamBind:', this);
 		const { history } = this.props;
+		const examName = window.sessionStorage.getItem('examName');
 
 		return (
 			<Fragment>
 				<ButtonGroup history={history} />
-				<TableUI />
-				<UserModal />
+				<TableUI examName={examName} />
 			</Fragment>
 		);
 	}
 }
 
-export default withRouter(ExamBind);
+export default withRouter(EditExam);
