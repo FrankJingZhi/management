@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import { Switch, Route } from 'react-router-dom'; //react路由
 import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
-import UserManage from './components/userManage'; //用户组管理组件
-import SelfManage from './components/selfManage'; //用户管理组件
-import ExamBind from './components/examBind'; //试卷绑定组件
-import ExamManage from './components/examManage'; //试卷管理组件
-import EditExam from './components/editExam'; //编辑试卷管理组件
-import QuestionManage from './components/questionManage'; //题目管理组件
+import UserManage from './components/userManage/userManage'; //用户组管理组件
+import SelfManage from './components/userManage/selfManage'; //用户管理组件
+import ExamBind from './components/examManage/examBind'; //试卷绑定组件
+import ExamManage from './components/examManage/examManage'; //试卷管理组件
+import EditExam from './components/examManage/editExam'; //编辑试卷管理组件
+import QuestionManage from './components/questionManage/questionManage'; //题目管理组件
 
 
 const { Content } = Layout;

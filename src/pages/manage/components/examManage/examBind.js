@@ -1,8 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import ButtonGroup from './components/buttonGroup';
-import TableUI from './components/table';
-import UserModal from './components/userModal';
+import ButtonGroup from '../components/buttonGroup';
+import TableUI from '../components/table';
+import UserModal from '../components/userModal';
 
 class ExamBind extends PureComponent {
 	render() {
