@@ -5,6 +5,7 @@ import { reducer as TestReducer } from '../pages/test/store';
 import { reducer as CommonReducer } from '../common/layout/store';
 import { reducer as ExamReducer } from '../pages/exam/store';
 import { reducer as ManageReducer } from '../pages/manage/store';
+import { reducer as PersonReducer } from '../pages/person/store';
 
 const reducer = combineReducers({
 	login: LoginReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
 	common: CommonReducer,
 	exam: ExamReducer,
 	manage: ManageReducer,
+	person: PersonReducer,
 });
 
 export default reducer;
