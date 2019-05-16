@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 页面头部
  * @since: 2019-04-22 14:46:49
- * @lastTime: 2019-05-05 14:22:17
+ * @lastTime: 2019-05-15 17:01:48
  */
 import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
@@ -16,11 +16,11 @@ const { SubMenu } = Menu;
 const { Header } = Layout;
 
 class HeaderUI extends PureComponent {
-	componentDidMount(){
+	componentDidMount() {
 		this.props.checkRouter(this.props.pathname);
 	}
 	render() {
-		const { headerItem, dropDownMenu,checkRouter,pathname } = this.props;
+		const { headerItem, dropDownMenu, checkRouter, pathname } = this.props;
 		return (
 			<Header className="header">
 				<div className="logo">
@@ -43,7 +43,11 @@ class HeaderUI extends PureComponent {
 						}
 					>
 						{dropDownMenu.map((item) => {
-							return <Menu.Item key={item.get('id')}>{item.get('name')}</Menu.Item>;
+							return (
+								<Menu.Item key={item.get('id')}>
+									<Link to={item.get('url')}>{item.get('name')}</Link>
+								</Menu.Item>
+							);
 						})}
 					</SubMenu>
 				</Menu>
@@ -58,8 +62,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	checkRouter(pathname){
-		dispatch(actionCreators.checkRouter(pathname))
+	checkRouter(pathname) {
+		dispatch(actionCreators.checkRouter(pathname));
 	}
 });
 

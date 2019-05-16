@@ -8,6 +8,7 @@ import Training from '../../pages/training/index'; //
 import Test from '../../pages/test/index'; //
 import Manage from '../../pages/manage/index'; //
 import Exam from '../../pages/exam/index'; //
+import Person from '../../pages/person/index'; //
 import { Switch, Route } from 'react-router-dom'; //react路由
 
 const { Content } = Layout;
@@ -29,6 +30,7 @@ class LayoutUI extends Component {
 							<Route path={`${match.url}/training/exam`} component={Exam} />
 							<Route path={`${match.url}/test/exam`} component={Exam} />
 							<Route path={`${match.url}/manage`} component={Manage} />
+							<Route path={`${match.url}/person`} component={Person} />
 						</Switch>
 					</Layout>
 				</Content>

@@ -3,7 +3,7 @@
  * @LastEditors: Do not edit
  * @description: 图书馆管理员的笔记本--
  * @since: 2019-04-18 17:36:48
- * @lastTime: 2019-05-06 14:56:18
+ * @lastTime: 2019-05-15 17:05:43
  */
 import { fromJS } from 'immutable';
 import * as containts from './containts';
@@ -21,7 +21,7 @@ const defaultState = fromJS({
 		{ id: 'header_3', name: '管理', url: '/layout/manage/userManage' }
 	],
 	// 头部个人中心
-	dropDownMenu: [ { id: 'dropDown_1', name: '个人中心', url: '' }, { id: 'dropDown_2', name: '退出', url: '' } ],
+	dropDownMenu: [ { id: 'dropDown_1', name: '个人中心', url: '/layout/person' }, { id: 'dropDown_2', name: '退出', url: '' } ],
 	siderMenu: [
 		{ id: 'sider_1', url: '/layout/manage/userManage', name: '用户管理' },
 		{ id: 'sider_2', url: '/layout/manage/examManage', name: '试卷管理' },
