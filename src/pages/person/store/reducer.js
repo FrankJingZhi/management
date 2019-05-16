@@ -12,8 +12,9 @@ import * as containts from './containts';
  * @param {} 将默认数据转化为immutable对象
  */
 const defaultState = fromJS({
-	confirmDirty: false,	//表单验证flag
-	disableInput: true
+	confirmDirty: false, //验证两次输入密码是否一致
+	disableInput: true,
+	visibleModal: false
 });
 
 /**
@@ -24,7 +25,11 @@ const defaultState = fromJS({
 export default (state = defaultState, action) => {
 	switch (action.type) {
 		case containts.CHANGE_INPUT_EDIT:
-			return state.set('disableInput',action.data)
+			return state.set('disableInput', action.data);
+		case containts.SHOW_MODAL:
+			return state.set('visibleModal', action.data);
+		case containts.HANDLE_CONFIRM_BLUR:
+			return state.set('confirmDirty', action.data);
 		default:
 			return state;
 	}

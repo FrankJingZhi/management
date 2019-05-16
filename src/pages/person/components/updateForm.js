@@ -10,21 +10,16 @@ class UpdateForm extends PureComponent {
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
-				console.log('表单输入的值: ', values);
+                console.log('表单输入的值: ', values);
+                //向接口传数据
 			}
 		});
 	};
 
-	handleConfirmBlur = (e) => {
-		const { ConfirmDirty } = this.props;
-		const value = e.target.value;
-		this.setState({ confirmDirty: ConfirmDirty || !!value });
-	};
-
 	render() {
-		console.log('updataForm:');
+		// console.log('updataForm:');
 		const { getFieldDecorator } = this.props.form;
-		const { changeInputEdit, DisableInput } = this.props;
+		const { changeInputEdit, DisableInput,showModal,VisibleModal } = this.props;
 
 		const formItemLayout = {
 			labelCol: {
@@ -107,7 +102,9 @@ class UpdateForm extends PureComponent {
 								</Button>
 							</Col>
 							<Col span={5}>
-								<Button type="primary">修改密码</Button>
+								<Button type="primary" onClick={() => showModal(VisibleModal)}>
+									修改密码
+								</Button>
 							</Col>
 						</Row>
 					</Form.Item>
@@ -120,14 +117,17 @@ class UpdateForm extends PureComponent {
 const WrappedUpdateForm = Form.create({ name: 'register' })(UpdateForm);
 
 const mapStateToProps = (state) => ({
-	ConfirmDirty: state.getIn([ 'person', 'confirmDirty' ]),
-	DisableInput: state.getIn([ 'person', 'disableInput' ])
+    DisableInput: state.getIn([ 'person', 'disableInput' ]),
+    VisibleModal: state.getIn(['person','visibleModal'])
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	changeInputEdit(DisableInput) {
 		dispatch(actionCreators.changeInputEdit(DisableInput));
-	}
+    },
+    showModal(VisibleModal){
+        dispatch(actionCreators.showModal(VisibleModal))
+    }
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedUpdateForm));
