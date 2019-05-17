@@ -21,7 +21,6 @@ const defaultState = fromJS({
 	//	登录用户信息
 	userInfo: {
 		name: '',	//用户名
-		password: '',
 		status: 0,	//登陆状态
 		permission: '',	//用户权限
 	}

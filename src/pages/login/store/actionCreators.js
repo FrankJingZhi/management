@@ -3,25 +3,25 @@
  * @LastAuthor: Do not edit
  * @description: 需要派发的action
  * @since: 2019-04-16 10:47:01
- * @lastTime: 2019-05-15 14:42:30
+ * @lastTime: 2019-05-17 17:58:34
  */
 import axios from 'axios';
 import * as containts from './containts';
 import { fromJS } from 'immutable'; //
 
-export const changeTextValue = (type,value) => {
-    if(type === 'userName'){
-        return{
-            type:containts.CHANGE_USER_NAME,
-            data:fromJS(value)
-        }
-    }else if(type === 'password'){
-        return{
-            type:containts.CHANGE_USER_PWD,
-            data:fromJS(value)
-        } 
-    }
-}
+export const changeTextValue = (type, value) => {
+	if (type === 'userName') {
+		return {
+			type: containts.CHANGE_USER_NAME,
+			data: fromJS(value)
+		};
+	} else if (type === 'password') {
+		return {
+			type: containts.CHANGE_USER_PWD,
+			data: fromJS(value)
+		};
+	}
+};
 
 /*
  * @Author: Frank
@@ -29,27 +29,26 @@ export const changeTextValue = (type,value) => {
  * @description: 登录api
  * @since: 2019-04-16 10:47:01
  */
-export const loginClick = (userName, password) => {
+export const loginClick = (values) => {
+	// console.log('loginClick:',JSON.stringify(values))
 	return (dispatch) => {
-        axios.get('http://localhost:8080/user/check')
-		// axios({
-		// 	method: 'post',
-		// 	url: '/api/login/login.json',
-		// 	data: {
-        // 		userName,
-        //      password
-		// 	}
-		// })
+		axios({
+			method: 'post',
+			url: '/textNet-SSM/user/check',
+			data: values,
+			// contentType : 'application/json;charset=utf-8',
+			// dataType:'json'
+		})
 			.then((res) => {
-				console.log('login:',res)
-                let userInfo = {};
-                const data = res.data;
+				console.log('login:', res);
+				let userInfo = {};
+				const data = res.data;
 				if (data.status) {
 					userInfo = {
-						name: userName,
+						name: values.name,
 						status: 1,
-						permission: data.data.permission
-                    };
+						permission: data.data
+					};
 				} else {
 					userInfo = {
 						name: '',

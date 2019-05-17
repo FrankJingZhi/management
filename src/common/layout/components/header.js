@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 页面头部
  * @since: 2019-04-22 14:46:49
- * @lastTime: 2019-05-15 17:01:48
+ * @lastTime: 2019-05-17 18:02:00
  */
 import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
@@ -20,7 +20,7 @@ class HeaderUI extends PureComponent {
 		this.props.checkRouter(this.props.pathname);
 	}
 	render() {
-		const { headerItem, dropDownMenu, checkRouter, pathname } = this.props;
+		const { headerItem, dropDownMenu, checkRouter, pathname,name } = this.props;
 		return (
 			<Header className="header">
 				<div className="logo">
@@ -38,7 +38,7 @@ class HeaderUI extends PureComponent {
 					<SubMenu
 						title={
 							<span className="submenu-title-wrapper">
-								<Icon type="user" />用户名
+								<Icon type="user" />{name}
 							</span>
 						}
 					>
@@ -58,7 +58,8 @@ class HeaderUI extends PureComponent {
 
 const mapStateToProps = (state) => ({
 	headerItem: state.getIn([ 'common', 'headerItem' ]), //头部标签
-	dropDownMenu: state.getIn([ 'common', 'dropDownMenu' ]) //头部个人中心
+	dropDownMenu: state.getIn([ 'common', 'dropDownMenu' ]), //头部个人中心
+	name: state.getIn(['login','userInfo','name']),	//用户名
 });
 
 const mapDispatchToProps = (dispatch) => ({

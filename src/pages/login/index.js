@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { LoginHeader, LoginHeaderDiv, LoginWrapper, LoginContent, LoginContentLeft, LoginContentRight } from './style';
-import { Button, Icon, Input } from 'antd'; //antd按需加载需要的组件
-import { actionCreators } from './store'; //从store文件夹引入actionCreators模块
+import { Icon } from 'antd'; //antd按需加载需要的组件
 import { Redirect } from 'react-router-dom'; //引入Redirect组件用于js上的页面跳转
+import LoginForm from './component/loginForm'; //登陆表单组件
 
 class Login extends PureComponent {
 	render() {
-		const { headerList, loginClick, changeTextValue, userName, password, status } = this.props;
+		const { headerList, status } = this.props;
 		if(status) return <Redirect to="/layout/training"/>;
 		return (
 			<LoginWrapper>
@@ -38,30 +39,7 @@ class Login extends PureComponent {
 						</li>
 					</LoginContentLeft>
 					<LoginContentRight>
-						<Input
-							className="textSize"
-							type="info"
-							placeholder="用户名"
-							size="large"
-							allowClear
-							onChange={(e) => changeTextValue('userName', e)}
-						/>
-						<Input.Password
-							className="textSize"
-							type="info"
-							placeholder="密码"
-							size="large"
-							onChange={(e) => changeTextValue('password', e)}
-						/>
-						<Button
-							className="textSize"
-							type="primary"
-							size="large"
-							block
-							onClick={() => loginClick(userName, password)}
-						>
-							登录
-						</Button>
+						<LoginForm />
 					</LoginContentRight>
 				</LoginContent>
 				{/* 登录页面主体--结束 */}
@@ -73,19 +51,7 @@ class Login extends PureComponent {
 const mapStateToProps = (state) => ({
 	headerList: state.getIn([ 'login', 'headerList' ]), //将登录页头部数据传给props
 	userName: state.getIn([ 'login', 'userInfo', 'name' ]), //将state里的userInfo传给props
-	password: state.getIn([ 'login', 'userInfo', 'password' ]), //将state里的password传给props
-	status: state.getIn([ 'login', 'userInfo', 'status' ]), //将state里的status传给props
+	status: state.getIn([ 'login', 'userInfo', 'status' ]) //将state里的status传给props
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	// 监听用户名和密码
-	changeTextValue(type, e) {
-		dispatch(actionCreators.changeTextValue(type, e.target.value));
-	},
-	// 登录按钮点击回调
-	loginClick(userName, password) {
-		dispatch(actionCreators.loginClick(userName, password));
-	}
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, null)(Login));
