@@ -23,6 +23,7 @@ const defaultState = fromJS({
 		name: '',	//用户名
 		status: 0,	//登陆状态
 		permission: '',	//用户权限
+		msg:'', //登录信息
 	}
 });
 

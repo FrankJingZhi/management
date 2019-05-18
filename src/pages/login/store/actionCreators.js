@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 需要派发的action
  * @since: 2019-04-16 10:47:01
- * @lastTime: 2019-05-17 17:58:34
+ * @lastTime: 2019-05-18 17:15:16
  */
 import axios from 'axios';
 import * as containts from './containts';
@@ -36,8 +36,6 @@ export const loginClick = (values) => {
 			method: 'post',
 			url: '/textNet-SSM/user/check',
 			data: values,
-			// contentType : 'application/json;charset=utf-8',
-			// dataType:'json'
 		})
 			.then((res) => {
 				console.log('login:', res);
@@ -47,13 +45,15 @@ export const loginClick = (values) => {
 					userInfo = {
 						name: values.name,
 						status: 1,
-						permission: data.data
+						permission: data.data,
+						msg: data.msg
 					};
 				} else {
 					userInfo = {
 						name: '',
 						status: 0,
-						permission: ''
+						permission: '',
+						msg: data.msg
 					};
 				}
 				dispatch(changeUserInfo(userInfo));
