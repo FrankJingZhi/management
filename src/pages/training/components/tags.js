@@ -14,10 +14,10 @@ class Tags extends PureComponent {
 						if (type === '类型') {
 							return (
 								<TagTipsLi
-									key={item.get('id')}
+									key={index}
 									className={`${index === tipCurrentIndex ? 'active' : null}`}
 								>
-									<TagTipsText onClick={() => handleTipClick(index)}>{item.get('name')}</TagTipsText>
+									<TagTipsText onClick={() => handleTipClick(index)}>{item}</TagTipsText>
 								</TagTipsLi>
 							);
 						} else {

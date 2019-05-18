@@ -11,17 +11,19 @@ import { fromJS } from 'immutable'; //
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-05 17:08:41
+ * @lastTime: 2019-05-18 17:30:37
  * @LastAuthor: Do not edit
  * @description: 获取标签信息
  * @since: 2019-04-22 18:19:43
  */
 export const getTips = () => {
 	return (dispatch) => {
-		axios
-			.get('/api/training/tags.json')
+		axios({
+			url:'/textNet-SSM/test/findType',
+			method:'post'
+		})
 			.then((res) => {
-				const data = res.data.data;
+				const data = res.data;
 				dispatch(getTipsAction(data));
 			})
 			.catch(() => {
@@ -50,3 +52,25 @@ export const changeDif = (data) =>({
     type: containts.CHANGE_DIFFICULT,
 	data: fromJS(data)
 })
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 获取训练列表的数据
+ * @since: 2019-05-18 17:29:56
+ */
+export const getList = () => {
+	return(dispatch)=>{
+		axios({
+			url:'/textNet-SSM/user/query',
+			method:'post',
+			data:{
+				start:1,
+				size:3
+			}
+		}).then((res)=>{
+			console.log('list:',res)
+		})
+	}
+}

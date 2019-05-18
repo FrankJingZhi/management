@@ -22,14 +22,7 @@ const defaultState = fromJS({
 		{id:'dif_2',name:'普通'},
 		{id:'dif_3',name:'困难'},
 	],
-	trainingExam:[
-		{id:'tr_img_1',name:'第一次训练'},
-		{id:'tr_img_2',name:'第二次训练'},
-		{id:'tr_img_3',name:'第三次训练'},
-		{id:'tr_img_4',name:'第四次训练'},
-		{id:'tr_img_5',name:'第五次训练'},
-		{id:'tr_img_6',name:'第六次训练'},
-	]
+	trainingExam:[]
 });
 
 /**

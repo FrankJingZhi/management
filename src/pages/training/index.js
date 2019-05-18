@@ -11,6 +11,7 @@ const { Content } = Layout;
 class Training extends PureComponent {
 	componentDidMount() {
 		this.props.getTips();
+		this.props.getList();
 	}
 	render() {
 		// console.log('training,', this);
@@ -36,6 +37,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	getTips() {
 		dispatch(actionCreators.getTips());
+	},
+	getList(){
+		dispatch(actionCreators.getList())
 	}
 });
 
