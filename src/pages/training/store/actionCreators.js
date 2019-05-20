@@ -11,7 +11,7 @@ import { fromJS } from 'immutable'; //
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-20 21:12:53
+ * @lastTime: 2019-05-20 21:32:33
  * @LastAuthor: Do not edit
  * @description: 获取标签信息
  * @since: 2019-04-22 18:19:43
@@ -60,8 +60,8 @@ export const changeDif = (data) =>({
  * @description: 获取训练列表的数据
  * @since: 2019-05-18 17:29:56
  */
-export const getList = (currentPage,tip,difficullt) => {
-	console.log('getList:',currentPage,10*(currentPage-1)+1,currentPage*10,tip,difficullt)
+export const getTrainingList = (currentPage,tip,difficullt) => {
+	console.log('getTrainingList:',currentPage,10*(currentPage-1)+1,currentPage*10,tip,difficullt)
 	return(dispatch)=>{
 		axios({
 			url:'/textNet-SSM/training/findTrainingByTypeAndDifficullty',
@@ -75,12 +75,12 @@ export const getList = (currentPage,tip,difficullt) => {
 		}).then((res)=>{
 			console.log('list:',res)
 			const data = res.data;
-			dispatch(getListAction(data))
+			dispatch(getTrainingListAction(data))
 		})
 	}
 }
 
-export const getListAction = (data) =>({
+export const getTrainingListAction = (data) =>({
 	type:containts.GET_LIST_ACTION,
 	data: fromJS(data)
 })
