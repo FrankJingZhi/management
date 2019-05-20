@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 class List extends PureComponent {
 	render() {
-		const { exam,pathname } = this.props;
+		const { exam, pathname } = this.props;
 		return (
 			<ListWrapper>
 				{exam.map((item) => {
@@ -17,8 +17,8 @@ class List extends PureComponent {
 									<ItemTitle>{item.get('name')}</ItemTitle>
 								</ItemWrapperTop>
 								<ItemWrapperMid>
-									<ItemInfo>HTML</ItemInfo>
-									<ItemInfo>简单</ItemInfo>
+									<ItemInfo>{item.get('type')}</ItemInfo>
+									<ItemInfo>{item.get('difficullty')}</ItemInfo>
 								</ItemWrapperMid>
 							</Link>
 						</ItemWrapper>

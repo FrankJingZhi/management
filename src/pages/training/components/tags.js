@@ -5,19 +5,19 @@ import { actionCreators } from '../store'; //从store文件夹引入actionCreato
 
 class Tags extends PureComponent {
 	componentDidMount() {
-		const { tips, otherTips, tipCurrentIndex, difCurrentIndex, getTrainingList, currentPage,type } = this.props;
-		getTrainingList(tipCurrentIndex, tips, otherTips, difCurrentIndex, currentPage,type);
+		const { tips, otherTips, tipCurrentIndex, difCurrentIndex, getList, currentPage,type } = this.props;
+		getList(tipCurrentIndex, tips, otherTips, difCurrentIndex, currentPage,type);
 	}
 
 	handleTipClick(index, tips, otherTips, difCurrentIndex, currentPage){
-		const {handleTipClick,getTrainingList,type} = this.props;
+		const {handleTipClick,getList,type} = this.props;
 		handleTipClick(index);
-		getTrainingList(index,tips, otherTips, difCurrentIndex, currentPage,type)
+		getList(index,tips, otherTips, difCurrentIndex, currentPage,type)
 	}
 	handleDifClick(index, tips, otherTips, difCurrentIndex, currentPage){
-		const {handleDifClick,getTrainingList,type} = this.props;
+		const {handleDifClick,getList,type} = this.props;
 		handleDifClick(index);
-		getTrainingList(index,tips, otherTips, difCurrentIndex, currentPage,type)
+		getList(index,tips, otherTips, difCurrentIndex, currentPage,type)
 	}
 
 	render() {

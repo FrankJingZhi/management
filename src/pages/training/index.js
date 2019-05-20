@@ -10,19 +10,19 @@ const { Content } = Layout;
 
 class Training extends PureComponent {
 	componentDidMount() {
-		const {Tips,Difficult,currentPage,difCurrentIndex,tipCurrentIndex,getTrainingList,getTips} = this.props;
+		const {Tips,Difficult,currentPage,difCurrentIndex,tipCurrentIndex,getList,getTips} = this.props;
 		getTips();
-		getTrainingList(difCurrentIndex,Tips,Difficult,tipCurrentIndex,currentPage,null);
+		getList(difCurrentIndex,Tips,Difficult,tipCurrentIndex,currentPage,null);
 	}
 	render() {
 		// console.log('training,', this);
-		const { Tips, Type, Difficult, location, trainingExam,getTrainingList } = this.props;
+		const { Tips, Type, Difficult, location, trainingExam,getList } = this.props;
 		return (
 			<Content style={{ padding: '0 24px', minHeight: 280 }}>
-				<Tags getTrainingList={getTrainingList} tips={Tips} otherTips={Difficult} type={Type.get('0')} />
-				<Tags getTrainingList={getTrainingList} tips={Difficult} otherTips={Tips} type={Type.get('1')} />
+				<Tags getList={getList} tips={Tips} otherTips={Difficult} type={Type.get('0')} />
+				<Tags getList={getList} tips={Difficult} otherTips={Tips} type={Type.get('1')} />
 				<List exam={trainingExam} pathname={location.pathname} />
-				<PaginationUI getTrainingList={getTrainingList} />
+				<PaginationUI getList={getList} />
 			</Content>
 		);
 	}
@@ -42,13 +42,13 @@ const mapDispatchToProps = (dispatch) => ({
 	getTips() {
 		dispatch(actionCreators.getTips());
 	},
-	getTrainingList(index,tips, otherTips, currentIndex, currentPage,type){
+	getList(index,tips, otherTips, currentIndex, currentPage,type){
 		if(type==='类型'){
-			dispatch(actionCreators.getTrainingList(currentPage, tips.get(index), otherTips.get(currentIndex)));
+			dispatch(actionCreators.getList(currentPage, tips.get(index), otherTips.get(currentIndex)));
 		}else if(type==='难度'){
-			dispatch(actionCreators.getTrainingList(currentPage, otherTips.get(currentIndex), tips.get(index)));
+			dispatch(actionCreators.getList(currentPage, otherTips.get(currentIndex), tips.get(index)));
 		}else{
-			dispatch(actionCreators.getTrainingList(currentPage, otherTips.get(index), tips.get(index)));
+			dispatch(actionCreators.getList(currentPage, otherTips.get(index), tips.get(index)));
 		}
 	}
 });

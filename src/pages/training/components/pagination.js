@@ -7,9 +7,9 @@ import { actionCreators } from '../store';
 class PaginationUI extends PureComponent {
 
 	linkToPage(e){
-		const {linkToPage,Tips,Difficult,currentPage,difCurrentIndex,tipCurrentIndex,getTrainingList} = this.props;
+		const {linkToPage,Tips,Difficult,currentPage,difCurrentIndex,tipCurrentIndex,getList} = this.props;
 		linkToPage(e);
-		getTrainingList(difCurrentIndex,Tips,Difficult,tipCurrentIndex,e,null);
+		getList(difCurrentIndex,Tips,Difficult,tipCurrentIndex,e,null);
 	}
 
 	render() {
