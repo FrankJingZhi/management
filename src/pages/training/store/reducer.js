@@ -17,7 +17,8 @@ const defaultState = fromJS({
 	tipCurrentIndex: 0,
 	type: [ '类型', '难度' ],
 	difficult: ['全部','简单','普通','困难'],
-	trainingExam: []
+	trainingExam: [],
+	currentPage:1
 });
 
 /**
@@ -40,6 +41,9 @@ export default (state = defaultState, action) => {
 		// 修改列表数据
 		case containts.GET_LIST_ACTION:
 			return state.set('trainingExam', action.data);
+		// 分页器页码
+		case containts.LINK_TO_PAGE:
+			return state.set('currentPage', action.data);
 		default:
 			return state;
 	}
