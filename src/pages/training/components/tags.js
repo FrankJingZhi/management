@@ -5,7 +5,7 @@ import { actionCreators } from '../store'; //从store文件夹引入actionCreato
 
 class Tags extends PureComponent {
 	render() {
-		const { tips, handleTipClick, tipCurrentIndex, type, handleDifClick, difCurrentIndex } = this.props;
+		const { tips,otherTips, handleTipClick, tipCurrentIndex, type, handleDifClick, difCurrentIndex } = this.props;
 		return (
 			<TagWrapper>
 				<TagTitle>{type}</TagTitle>
@@ -17,16 +17,16 @@ class Tags extends PureComponent {
 									key={index}
 									className={`${index === tipCurrentIndex ? 'active' : null}`}
 								>
-									<TagTipsText onClick={() => handleTipClick(index)}>{item}</TagTipsText>
+									<TagTipsText onClick={() => handleTipClick(index,tips,otherTips,difCurrentIndex)}>{item}</TagTipsText>
 								</TagTipsLi>
 							);
 						} else {
 							return (
 								<TagTipsLi
-									key={item.get('id')}
+									key={index}
 									className={`${index === difCurrentIndex ? 'active' : null}`}
 								>
-									<TagTipsText onClick={() => handleDifClick(index)}>{item.get('name')}</TagTipsText>
+									<TagTipsText onClick={() => handleDifClick(index,tips,otherTips,tipCurrentIndex)}>{item}</TagTipsText>
 								</TagTipsLi>
 							);
 						}
@@ -44,11 +44,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	// 派发
-	handleTipClick(index) {
+	handleTipClick(index,tips,otherTips,difCurrentIndex) {
 		dispatch(actionCreators.handleTipClick(index));
+		dispatch(actionCreators.getList(tips.get(index),otherTips.get(difCurrentIndex)))
 	},
-	handleDifClick(index) {
+	handleDifClick(index,tips,otherTips,tipCurrentIndex) {
 		dispatch(actionCreators.changeDif(index));
+		dispatch(actionCreators.getList(tips.get(index),otherTips.get(tipCurrentIndex)))
 	}
 });
 

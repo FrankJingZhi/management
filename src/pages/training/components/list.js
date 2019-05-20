@@ -18,8 +18,8 @@ class List extends PureComponent {
 									<ItemTitle>{item.get('name')}</ItemTitle>
 								</ItemWrapperTop>
 								<ItemWrapperMid>
-									<ItemInfo>HTML</ItemInfo>
-									<ItemInfo>简单</ItemInfo>
+									<ItemInfo>{item.get('type')}</ItemInfo>
+									<ItemInfo>{item.get('difficullty')}</ItemInfo>
 								</ItemWrapperMid>
 							</Link>
 						</ItemWrapper>

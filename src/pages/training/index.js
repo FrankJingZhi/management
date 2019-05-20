@@ -18,8 +18,8 @@ class Training extends PureComponent {
 		const { Tips, Type, Difficult, location, trainingExam } = this.props;
 		return (
 			<Content style={{ padding: '0 24px', minHeight: 280 }}>
-				<Tags tips={Tips} type={Type.get('0')} />
-				<Tags tips={Difficult} type={Type.get('1')} />
+				<Tags tips={Tips} otherTips={Difficult} type={Type.get('0')} />
+				<Tags tips={Difficult} otherTips={Tips} type={Type.get('1')} />
 				<List exam={trainingExam} pathname={location.pathname} />
 				<PaginationUI />
 			</Content>
