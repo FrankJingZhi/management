@@ -11,7 +11,7 @@ import { fromJS } from 'immutable'; //
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-20 21:50:08
+ * @lastTime: 2019-05-21 15:09:57
  * @LastAuthor: Do not edit
  * @description: 获取标签信息
  * @since: 2019-04-22 18:19:43
@@ -96,3 +96,27 @@ export const linkToPage = (page) => ({
 	type:containts.LINK_TO_PAGE,
 	data: fromJS(page)
 })
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 获取列表总数
+ * @since: 2019-05-21 15:02:47
+ */
+export const getTotalPage = () => {
+	return (dispatch)=>{
+		axios({
+			method:'post',
+			url:'/textNet-SSM/training/getCount',
+		}).then((res)=>{
+			const data = res.data;
+			dispatch(getTotalPageAction(data))
+		})
+	}
+}
+
+const getTotalPageAction = (data) =>({
+	type: containts.GET_TOTAL_PAGE,
+	data: fromJS(data)
+}) 

@@ -18,7 +18,8 @@ const defaultState = fromJS({
 	type: [ '类型', '难度' ],
 	difficult: ['全部','简单','普通','困难'],
 	trainingExam: [],
-	currentPage:1
+	currentPage:1,
+	totalPage:0
 });
 
 /**
@@ -44,6 +45,9 @@ export default (state = defaultState, action) => {
 		// 分页器页码
 		case containts.LINK_TO_PAGE:
 			return state.set('currentPage', action.data);
+		// 总条数
+		case containts.GET_TOTAL_PAGE:
+			return state.set('totalPage', action.data);
 		default:
 			return state;
 	}
