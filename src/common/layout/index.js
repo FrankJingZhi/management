@@ -15,8 +15,8 @@ const { Content } = Layout;
 
 class LayoutUI extends Component {
 	render() {
-		console.log('props,', this, this.props.match.url);
-		const { location, RouterPath, match } = this.props;
+		// console.log('props,', this, this.props.match.url);
+		const { location, match } = this.props;
 		return (
 			<Layout className="wrapper">
 				<HeaderUI pathname={location.pathname} />
@@ -27,7 +27,7 @@ class LayoutUI extends Component {
 						<Switch>
 							<Route path={`${match.url}/training`} exact component={Training} />
 							<Route path={`${match.url}/test`} exact component={Test} />
-							<Route path={`${match.url}/training/exam`} component={Exam} />
+							<Route path={`${match.url}/training/exam/:exam_id`} component={Exam} />
 							<Route path={`${match.url}/test/exam`} component={Exam} />
 							<Route path={`${match.url}/manage`} component={Manage} />
 							<Route path={`${match.url}/person`} component={Person} />

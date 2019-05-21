@@ -96,8 +96,3 @@ export const ItemInfo = styled.p`
 	border-radius: 18px;
 	font-size: 13px;
 `;
-export const PaginationWrapper = styled.div`
-	width: 100%;
-	text-align: center;
-    margin: 10px 0;
-`
