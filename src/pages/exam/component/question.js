@@ -26,7 +26,7 @@ class QuestionUI extends PureComponent {
 		};
 		return (
 			<ProblemWrapper>
-				<ProblemTitle>{`${quesNum}.${question.get('title')}`}</ProblemTitle>
+				<ProblemTitle>{`${quesNum+1}.${question.get('title')}`}</ProblemTitle>
 				<RadioGroup className="radioGroup" onChange={(e)=>this.changeOptions(e,quesNum)} >
 					{options.map((item,index)=>{
 						return (<Radio key={index} style={radioStyle} value={item.get('option')}>
