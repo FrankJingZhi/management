@@ -3,25 +3,11 @@
  * @LastAuthor: Do not edit
  * @description: 需要派发的action
  * @since: 2019-04-16 10:47:01
- * @lastTime: 2019-05-18 17:15:16
+ * @lastTime: 2019-05-22 15:32:25
  */
 import axios from 'axios';
 import * as containts from './containts';
 import { fromJS } from 'immutable'; //
-
-export const changeTextValue = (type, value) => {
-	if (type === 'userName') {
-		return {
-			type: containts.CHANGE_USER_NAME,
-			data: fromJS(value)
-		};
-	} else if (type === 'password') {
-		return {
-			type: containts.CHANGE_USER_PWD,
-			data: fromJS(value)
-		};
-	}
-};
 
 /*
  * @Author: Frank
@@ -42,6 +28,8 @@ export const loginClick = (values) => {
 				let userInfo = {};
 				const data = res.data;
 				if (data.status) {
+					window.sessionStorage.setItem('userName',values.name)
+					window.sessionStorage.setItem('userPermission',data.data)
 					userInfo = {
 						name: values.name,
 						status: 1,

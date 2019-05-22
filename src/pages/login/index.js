@@ -50,7 +50,6 @@ class Login extends PureComponent {
 
 const mapStateToProps = (state) => ({
 	headerList: state.getIn([ 'login', 'headerList' ]), //将登录页头部数据传给props
-	userName: state.getIn([ 'login', 'userInfo', 'name' ]), //将state里的userInfo传给props
 	status: state.getIn([ 'login', 'userInfo', 'status' ]) //将state里的status传给props
 });
 
