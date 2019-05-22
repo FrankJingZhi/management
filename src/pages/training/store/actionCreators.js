@@ -11,7 +11,7 @@ import { fromJS } from 'immutable'; //
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-21 15:42:18
+ * @lastTime: 2019-05-22 18:38:29
  * @LastAuthor: Do not edit
  * @description: 获取标签信息
  * @since: 2019-04-22 18:19:43
@@ -64,9 +64,10 @@ export const getList = (currentPage,tip,difficullt) => {
 	// console.log('getList:',currentPage,10*(currentPage-1)+1,currentPage*10,tip,difficullt)
 	return(dispatch)=>{
 		axios({
-			url:'/textNet-SSM/training/findTrainingByTypeAndDifficullty',
+			url:'/textNet-SSM/trainingRecord/findTraining',
 			method:'post',
 			data:{
+				userid:window.sessionStorage.getItem('userName'),
 				start:10*(currentPage-1)+1,
 				size:currentPage*10,
 				type:tip,

@@ -11,7 +11,7 @@ import { fromJS } from 'immutable'; //
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-22 17:58:04
+ * @lastTime: 2019-05-22 18:50:16
  * @LastAuthor: Do not edit
  * @description: 获取题目
  * @since: 2019-04-28 10:21:34
@@ -104,6 +104,7 @@ export const changeOptions = (data) => ({
  */
 export const getScore = (score,exam_id,type) =>{
     return(dispatch)=>{
+        console.log('exam type:',type)
         axios({
             url:`/textNet-SSM/${type}Record/update`,
             method:'post',
