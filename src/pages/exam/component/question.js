@@ -7,12 +7,18 @@ import { ProblemWrapper, ProblemTitle } from '../style';
 const RadioGroup = Radio.Group;
 
 class QuestionUI extends PureComponent {
-	changeOptions(e){
-		console.log(e.target.value)
+	changeOptions(e,quesNum){
+		const {answer,changeOptions} = this.props;
+		// console.log(e.target.value,quesNum)
+		let newAnswer = answer.toJS();
+		newAnswer[quesNum] = e.target.value;
+		// console.log('answer:',newAnswer)
+		changeOptions(newAnswer)
 	}
 	render() {
-        const { question } = this.props;
-        const options = question.get('options');
+		const { question,quesNum } = this.props;
+		const options = question.get('options');
+		// console.log('questionUI:',question.toJS())
 		const radioStyle = {
 			display: 'block',
 			height: '30px',
@@ -20,10 +26,12 @@ class QuestionUI extends PureComponent {
 		};
 		return (
 			<ProblemWrapper>
-				<ProblemTitle>{question.get('title')}</ProblemTitle>
-				<RadioGroup className="radioGroup" onChange={(e)=>this.changeOptions(e)} >
+				<ProblemTitle>{`${quesNum}.${question.get('title')}`}</ProblemTitle>
+				<RadioGroup className="radioGroup" onChange={(e)=>this.changeOptions(e,quesNum)} >
 					{options.map((item,index)=>{
-                        return <Radio key={index} style={radioStyle} value={index}>{item}</Radio>
+						return (<Radio key={index} style={radioStyle} value={item.get('option')}>
+							{`${item.get('option')}.${item.get('content')}`}
+						</Radio>)
                     })}
 				</RadioGroup>
 			</ProblemWrapper>
@@ -31,14 +39,13 @@ class QuestionUI extends PureComponent {
 	}
 }
 const mapStateToProps = (state) => ({
-	// Answer: state.getIn([ 'exam', 'answer' ]) //用户选择的答案
+	answer: state.getIn([ 'exam', 'answer' ]), //用户选择的答案
 });
 
 const mapDispatchToProps = (dispatch) => ({
-// 	changeOptions(e) {
-// 		console.log(e.target.value)
-// 		dispatch(actionCreators.changeOptions(e.target.value));
-// 	}
+	changeOptions(newAnswer) {
+		dispatch(actionCreators.changeOptions(newAnswer));
+	}
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionUI);

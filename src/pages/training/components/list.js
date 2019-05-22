@@ -10,9 +10,10 @@ class List extends PureComponent {
 		return (
 			<ListWrapper>
 				{exam.map((item) => {
+					console.log('trainingExam:',pathname,item.get('id'))
 					return (
 						<ItemWrapper key={item.get('id')}>
-							<Link to={{pathname:`${pathname}/exam`,query:{examName:`${item.get('name')}`}}}>
+							<Link to={{pathname:`${pathname}/exam/${item.get('id')}`}}>
 								<ItemWrapperTop>
 									<ItemImg src={imgSrc} />
 									<ItemTitle>{item.get('name')}</ItemTitle>

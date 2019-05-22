@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
 import HeaderUI from './components/header'; //引入公共头部布局组件
 import FooterUI from './components/footer'; //引入公共底部布局组件
@@ -28,7 +28,7 @@ class LayoutUI extends Component {
 							<Route path={`${match.url}/training`} exact component={Training} />
 							<Route path={`${match.url}/test`} exact component={Test} />
 							<Route path={`${match.url}/training/exam/:exam_id`} component={Exam} />
-							<Route path={`${match.url}/test/exam`} component={Exam} />
+							<Route path={`${match.url}/test/exam/:exam_id`} component={Exam} />
 							<Route path={`${match.url}/manage`} component={Manage} />
 							<Route path={`${match.url}/person`} component={Person} />
 						</Switch>
@@ -39,8 +39,5 @@ class LayoutUI extends Component {
 		);
 	}
 }
-const mapStateToProps = (state) => ({
-	RouterPath: state.getIn([ 'common', 'routerPath' ])
-});
 
-export default connect(mapStateToProps, null)(LayoutUI);
+export default withRouter(LayoutUI);

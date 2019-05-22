@@ -11,7 +11,7 @@ class List extends PureComponent {
 				{exam.map((item) => {
 					return (
 						<ItemWrapper key={item.get('id')}>
-							<Link to={`${pathname}/exam/${item.get('name')}`}>
+							<Link to={`${pathname}/exam/${item.get('id')}`}>
 								<ItemWrapperTop>
 									<ItemImg src={imgSrc} />
 									<ItemTitle>{item.get('name')}</ItemTitle>
