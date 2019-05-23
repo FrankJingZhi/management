@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 页面头部
  * @since: 2019-04-22 14:46:49
- * @lastTime: 2019-05-18 14:49:51
+ * @lastTime: 2019-05-22 19:03:52
  */
 import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
@@ -20,7 +20,8 @@ class HeaderUI extends PureComponent {
 		this.props.checkRouter(this.props.pathname);
 	}
 	render() {
-		const { headerItem, dropDownMenu, checkRouter, pathname, name, permission } = this.props;
+		const { headerItem, dropDownMenu, checkRouter, pathname } = this.props;
+		const permission = window.sessionStorage.getItem('userPermission');
 		return (
 			<Header className="header">
 				<div className="logo">
@@ -47,7 +48,7 @@ class HeaderUI extends PureComponent {
 						title={
 							<span className="submenu-title-wrapper">
 								<Icon type="user" />
-								{name}
+								{window.sessionStorage.getItem('userName')}
 							</span>
 						}
 					>
@@ -68,7 +69,7 @@ class HeaderUI extends PureComponent {
 const mapStateToProps = (state) => ({
 	headerItem: state.getIn([ 'common', 'headerItem' ]), //头部标签
 	dropDownMenu: state.getIn([ 'common', 'dropDownMenu' ]), //头部个人中心
-	name: state.getIn([ 'login', 'userInfo', 'name' ]), //用户名
+	// name: state.getIn([ 'login', 'userInfo', 'name' ]), //用户名
 	permission: state.getIn([ 'login', 'userInfo', 'permission' ]) //用户权限
 });
 
