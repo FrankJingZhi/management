@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { Switch, Route } from 'react-router-dom'; //react路由
 import SiderContentUI from '../../common/layout/components/siderContentUI'; //引入公共侧边栏布局组件
@@ -9,7 +10,6 @@ import ExamManage from './components/examManage/examManage'; //试卷管理组�
 import EditExam from './components/examManage/editExam'; //编辑试卷管理组件
 import QuestionManage from './components/questionManage/questionManage'; //题目管理组件
 import EditQues from './components/questionManage/editQues'; //编辑题目管理组件
-import { connect } from 'tls';
 
 
 const { Content } = Layout;
