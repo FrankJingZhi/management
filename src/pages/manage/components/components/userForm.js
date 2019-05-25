@@ -1,17 +1,50 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Button, InputNumber } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
+import {connect} from 'react-redux';
+import { actionCreators } from '../../store';
 
 class RegistrationForm extends PureComponent {
 	state = {
 		confirmDirty: false
 	};
 
+	componentDidMount(){
+		// const {addUserInfo,closeAddHandleClick} = this.props;
+		// if(addUserInfo){
+		// 	if(addUserInfo.get('status') === 'success'){
+		// 		this.openNotificationWithIcon('success');
+		// 		closeAddHandleClick();
+		// 	}else{
+		// 		this.openNotificationWithIcon('error');
+		// 	}
+		// }
+	}
+
+	openNotificationWithIcon = (type) => {
+		if(type === 'error'){
+			notification[type]({
+				message: '报错提示',
+				description:
+					'抱歉，用户添加失败，请重试...'
+			});
+		}else{
+			notification[type]({
+				message: '成功提示',
+				description:
+					'用户添加成功！'
+			});
+		}
+	};
+
 	handleSubmit = (e) => {
-		console.log('userForm:', this, e);
+		const {handleUserForm,RouterPath,addUserInfo,closeAddHandleClick} = this.props;
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
+				console.log('表单输入的值: ', values);
+				handleUserForm(values,RouterPath,(res)=>{
+					console.log('res:',res)
+				});
 			}
 		});
 	};
@@ -24,7 +57,7 @@ class RegistrationForm extends PureComponent {
 	compareToFirstPassword = (rule, value, callback) => {
 		const form = this.props.form;
 		if (value && value !== form.getFieldValue('password')) {
-			callback('Two passwords that you enter is inconsistent!');
+			callback('两次输入的密码不一致');
 		} else {
 			callback();
 		}
@@ -49,22 +82,25 @@ class RegistrationForm extends PureComponent {
 				md: { span: 15 }
 			}
 		};
+		const tailItemLayout = {
+			wrapperCol: {
+				md: { 
+					span: 3,
+					offset: 11
+				}
+			}
+		};
 
 		return (
 			<Form {...formItemLayout} onSubmit={this.handleSubmit}>
 				<Form.Item label="用户组名">
 					{getFieldDecorator('groupname', {
-						rules: [ { required: true, message: 'Please input your nickname!', whitespace: true } ]
+						rules: [ { required: true, message: '请输入用户组名！', whitespace: true } ]
 					})(<Input />)}
 				</Form.Item>
-				<Form.Item label="人数上限">
-					{getFieldDecorator('uppermembers', {
-						rules: [ { required: true, message: 'Please input your nickname!', whitespace: true } ]
-					})(<InputNumber min={1} max={10} style={{ width: '100%' }} />)}
-				</Form.Item>
 				<Form.Item label="组管理员名">
-					{getFieldDecorator('nickname', {
-						rules: [ { required: true, message: 'Please input your nickname!', whitespace: true } ]
+					{getFieldDecorator('name', {
+						rules: [ { required: true, message: '请输入组管理员名！', whitespace: true } ]
 					})(<Input />)}
 				</Form.Item>
 				<Form.Item label="密码">
@@ -72,7 +108,7 @@ class RegistrationForm extends PureComponent {
 						rules: [
 							{
 								required: true,
-								message: 'Please input your password!'
+								message: '请输入密码！'
 							},
 							{
 								validator: this.validateToNextPassword
@@ -85,7 +121,7 @@ class RegistrationForm extends PureComponent {
 						rules: [
 							{
 								required: true,
-								message: 'Please confirm your password!'
+								message: '请再次输入密码！'
 							},
 							{
 								validator: this.compareToFirstPassword
@@ -95,10 +131,10 @@ class RegistrationForm extends PureComponent {
 				</Form.Item>
 				<Form.Item label="手机号">
 					{getFieldDecorator('phone', {
-						rules: [ { required: true, message: 'Please input your phone number!' } ]
+						rules: [ { required: true, message: '请输入手机号！' } ]
 					})(<Input />)}
 				</Form.Item>
-				<Form.Item>
+				<Form.Item {...tailItemLayout}>
 					<Button type="primary" htmlType="submit">
 						确定
 					</Button>
@@ -110,4 +146,14 @@ class RegistrationForm extends PureComponent {
 
 const WrappedRegistrationForm = Form.create({ name: 'register' })(RegistrationForm);
 
-export default WrappedRegistrationForm;
+const mapStateToProps = (state) => ({
+	addUserInfo: state.getIn(['manage','addUserInfo']),	//添加用户是否成功	
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	handleUserForm(values,RouterPath,callback){
+		dispatch(actionCreators.handleUserForm(values,RouterPath,callback))
+	}
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(WrappedRegistrationForm);

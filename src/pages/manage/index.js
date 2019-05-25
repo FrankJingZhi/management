@@ -9,6 +9,7 @@ import ExamManage from './components/examManage/examManage'; //试卷管理组�
 import EditExam from './components/examManage/editExam'; //编辑试卷管理组件
 import QuestionManage from './components/questionManage/questionManage'; //题目管理组件
 import EditQues from './components/questionManage/editQues'; //编辑题目管理组件
+import { connect } from 'tls';
 
 
 const { Content } = Layout;
@@ -37,4 +38,12 @@ class Manage extends PureComponent {
 	}
 }
 
-export default Manage;
+const mapStateToProps = (state) => ({
+	deleteInfo: state.getIn(['manage','deleteInfo']),	//删除
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Manage);

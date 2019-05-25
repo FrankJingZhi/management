@@ -11,38 +11,68 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-10 11:07:15
+ * @lastTime: 2019-05-24 19:53:01
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
  */
-export const getTableInfo = (RouterPath, userGroup) => {
+export const getTableInfo = (RouterPath, name) => {
 	return (dispatch) => {
 		if (
 			RouterPath.includes('userManage') &&
 			!RouterPath.includes('selfManage') &&
 			!RouterPath.includes('examBind')
 		) {
-			axios.get('/api/manage/groupInfo.json').then((res) => {
-				const data = res.data.data;
+			//userManage 超级管理员
+			axios({
+				url: '/textNet-SSM/user/findBFromUser',
+				method: 'post',
+				data: {
+					name: window.sessionStorage.getItem('userName'),
+					start: 1,
+					size: 5
+				}
+			}).then((res) => {
+				let data = res.data;
+				data.map((item, index) => {
+					return (item.key = index + 1);
+				});
+				// console.log('userManage:',data);
 				dispatch(getTableInfoAction(data));
 			});
 		} else if (RouterPath.includes('examManage')) {
+			//examManage 试卷信息
 			axios.get('/api/manage/examInfo.json').then((res) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
 			});
 		} else if (RouterPath.includes('questionManage')) {
+			//questionManage 题目
 			axios.get('/api/manage/questionInfo.json').then((res) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
 			});
 		} else if (RouterPath.includes('selfManage')) {
-			axios.get('/api/manage/userInfo.json').then((res) => {
-				const data = res.data.data;
+			//selfManage 组管理员
+			axios({
+				url: '/textNet-SSM/user/findCByGroup',
+				method: 'post',
+				data: {
+					name,
+					start: 1,
+					size: 5
+				}
+			}).then((res) => {
+				// console.log('res:', res);
+				let data = res.data;
+				data.map((item, index) => {
+					let new_item = Object.assign(item, { key: index + 1, binding: '训练:2;测试3' });
+					return (item = new_item);
+				});
 				dispatch(getTableInfoAction(data));
 			});
 		} else if (RouterPath.includes('examBind')) {
+			//examBind 绑定试卷
 			axios.get('/api/manage/examBindInfo.json').then((res) => {
 				const data = res.data.data;
 				dispatch(getTableInfoAction(data));
@@ -84,19 +114,15 @@ export const getColumnsInfo = (data) => {
 		columns = [
 			{
 				title: '用户组',
-				dataIndex: 'userGroup'
+				dataIndex: 'usergroup'
 			},
 			{
 				title: '组管理员',
-				dataIndex: 'groupManager'
+				dataIndex: 'name'
 			},
 			{
-				title: '组员',
-				dataIndex: 'groupMember'
-			},
-			{
-				title: '绑定情况',
-				dataIndex: 'bingding'
+				title: '联系方式',
+				dataIndex: 'phone'
 			}
 		];
 	} else if (data.includes('examManage')) {
@@ -145,15 +171,19 @@ export const getColumnsInfo = (data) => {
 		columns = [
 			{
 				title: '用户名',
-				dataIndex: 'userName'
+				dataIndex: 'name'
 			},
 			{
 				title: '班级',
-				dataIndex: 'class'
+				dataIndex: 'usergroup'
 			},
 			{
-				title: '修改时间',
-				dataIndex: 'modifyTime'
+				title: '联系方式',
+				dataIndex: 'phone'
+			},
+			{
+				title: '绑定情况',
+				dataIndex: 'binding'
 			}
 		];
 	} else if (data.includes('examBind')) {
@@ -224,7 +254,7 @@ export const changeAddBtnName = (RouterPath) => {
 	} else if (RouterPath.includes('questionManage')) {
 		data = '添加题目';
 	} else if (RouterPath.includes('examBind')) {
-		data = '添加试卷';
+		data = '绑定试卷';
 	}
 	return {
 		type: containts.CHANGE_ADD_BTN_NAME,
@@ -236,3 +266,60 @@ export const clearSelectedRowsAndKeys = () => ({
 	type: containts.CLEAR_ROWS_KEYS,
 	data: fromJS([])
 });
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: userForm表单提交
+ * @since: 2019-05-24 15:40:45
+ */
+export const handleUserForm = (data,RouterPath,callback) => {
+	let new_data = {
+		name: data.name,
+		password: data.password,
+		usergroup: data.usergroup,
+		phone: data.phone
+	};
+	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage')) {
+		new_data = Object.assign(new_data,{permission:'b'});
+	} else {
+		new_data = Object.assign(new_data,{permission:'c'});
+	}
+	return (dispatch) => {
+		axios({
+			url: '/textNet-SSM/user/add',
+			method: 'post',
+			data: new_data
+		}).then((res) => {
+			const data = res.data;
+			callback(data)
+			// dispatch(handleUserFormAction(data));
+		});
+	};
+};
+
+const handleUserFormAction = (data)=>({
+	type: containts.HANDLE_USER_FORM,
+	data:fromJS(data)
+})
+
+export const deleteClick = (usergroup) => {
+	return (dispatch) => {
+		axios({
+			url:'/textNet-SSM/user/removeByGroup',
+			method:'post',
+			data:{
+				group:usergroup
+			}
+		}).then((res)=>{
+			const data = res.data;
+			dispatch(deleteClickAction(data))
+		})
+	}
+}
+
+const deleteClickAction = (data) => ({
+	type:containts.DELETE_CLICK,
+	data: fromJS(data)
+})

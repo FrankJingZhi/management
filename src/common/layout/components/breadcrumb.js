@@ -3,7 +3,7 @@
  * @LastAuthor: Do not edit
  * @description: 面包屑导航
  * @since: 2019-04-22 14:52:48
- * @lastTime: 2019-05-21 14:38:42
+ * @lastTime: 2019-05-23 10:23:05
  */
 import React, { PureComponent } from 'react';
 import { Breadcrumb } from 'antd';
@@ -33,12 +33,6 @@ class BreadCrumbUI extends PureComponent {
 		];
 
 		function itemRender(route, params, routes, paths) {
-			// const last = routes.indexOf(route) === routes.length - 1;
-			// return last ? (
-			// 	<span>{route.breadcrumbName}</span>
-			// ) : (
-			// 	<Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-			// );
 			return (
 				<span>{route.breadcrumbName}</span>
 			)

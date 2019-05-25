@@ -13,12 +13,14 @@ import * as containts from './containts';
  */
 const defaultState = fromJS({
 	// table表格
-	columns: [],
+	columns: [],	//表头数据
 	dataSource: [], //表格数据
 	selectedRowKeys: [], //被选中行
 	selectedRows: [], //被选中行
 	showUserAddModal: false, //判断是否弹出添加组员的对话框
 	addBtnName: '', //添加按钮的名字
+	addUserInfo:[],	//添加用户信息
+	deleteInfo:[], //删除用户信息
 });
 
 /**
@@ -52,6 +54,12 @@ export default (state = defaultState, action) => {
 		//改变添加按钮名字
 		case containts.CHANGE_ADD_BTN_NAME:
 			return state.set('addBtnName', action.data);
+		//添加用户
+		case containts.HANDLE_USER_FORM:
+			return state.set('addUserInfo', action.data);
+		//删除用户
+		case containts.DELETE_CLICK:
+			return state.set('deleteInfo', action.data);
 		default:
 			return state;
 	}

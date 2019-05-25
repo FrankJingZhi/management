@@ -6,8 +6,8 @@ import { actionCreators } from '../../store'; //从store文件夹引入actionCre
 
 class TableUI extends PureComponent {
 	componentDidMount() {
-        const {RouterPath,getTableInfo,getColumnsInfo,userGroup,clearSelectedRowsAndKeys} = this.props;
-		userGroup ? getTableInfo(RouterPath,userGroup) : getTableInfo(RouterPath);
+        const {RouterPath,getTableInfo,getColumnsInfo,name,clearSelectedRowsAndKeys} = this.props;
+		name ? getTableInfo(RouterPath,name) : getTableInfo(RouterPath);
 		getColumnsInfo(RouterPath);
 		clearSelectedRowsAndKeys();
 	}
@@ -44,8 +44,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changeSelectedRows(rows) {
 		dispatch(actionCreators.changeSelectedRows(rows));
 	},
-	getTableInfo(data) {
-		dispatch(actionCreators.getTableInfo(data));
+	getTableInfo(data,name) {
+		dispatch(actionCreators.getTableInfo(data,name));
     },
     getColumnsInfo(data){
         dispatch(actionCreators.getColumnsInfo(data))

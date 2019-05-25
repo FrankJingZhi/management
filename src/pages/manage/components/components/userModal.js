@@ -19,13 +19,19 @@ class UserModal extends PureComponent {
       {/* userManage路由下添加按钮弹框表单 */}
       {
         RouterPath.includes('userManage') 
-        ? <WrappedRegistrationForm />
+				? <WrappedRegistrationForm 
+						closeAddHandleClick={closeAddHandleClick}
+						RouterPath={RouterPath}	
+					/>
         : ''
       }
       {/* examManage路由下添加按钮弹框表单 */}
       {
         RouterPath.includes('examManage') 
-        ? <WrappedExamForm />
+        ? <WrappedRegistrationForm 
+					closeAddHandleClick={closeAddHandleClick}
+					RouterPath={RouterPath}	
+				/>
         : ''
       }
 				
