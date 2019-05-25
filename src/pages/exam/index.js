@@ -10,22 +10,20 @@ const { Content } = Layout;
 
 class Exam extends PureComponent {
 	componentDidMount() {
-		const { getQuestion, match,routerPath } = this.props;
-		getQuestion(match.params.exam_id,routerPath.get('2'));
+		const { getQuestion, match, routerPath } = this.props;
+		getQuestion(match.params.exam_id, routerPath.get('2'));
 	}
 
 	openNotificationWithIcon = (type) => {
-		if(type === 'error'){
+		if (type === 'error') {
 			notification[type]({
 				message: '报错提示',
-				description:
-					'抱歉，数据丢失了，请重试...'
+				description: '抱歉，数据丢失了，请重试...'
 			});
-		}else{
+		} else {
 			notification[type]({
 				message: '成功提示',
-				description:
-					'试卷提交成功！'
+				description: '试卷提交成功！'
 			});
 		}
 	};
@@ -37,7 +35,7 @@ class Exam extends PureComponent {
 			okText: '确认',
 			cancelText: '取消',
 			onOk: () => {
-				const { answer, correctAnswer, getScore, match,routerPath } = this.props;
+				const { answer, correctAnswer, getScore, match, routerPath } = this.props;
 				console.log('answer:', answer.toJS(), correctAnswer.toJS());
 				let score = 0;
 				for (let i = 0; i < correctAnswer.size; i++) {
@@ -45,19 +43,19 @@ class Exam extends PureComponent {
 						score++;
 					}
 				}
-				getScore(score, match.params.exam_id,routerPath.get('2'));
+				getScore(score, match.params.exam_id, routerPath.get('2'));
 				Modal.success({
 					title: '提示',
 					content: `你所得的分数是：${score}`,
 					okText: '确认',
 					onOk: () => {
-						const { storeAnswer, match, history,routerPath } = this.props;
+						const { storeAnswer, match, history, routerPath } = this.props;
 						if (storeAnswer) {
-							this.openNotificationWithIcon('success')
-							history.push({path:`/layout/${routerPath.get('2')}`})
+							this.openNotificationWithIcon('success');
+							history.push({ path: `/layout/${routerPath.get('2')}` });
 						} else {
 							history.push({ path: match.url });
-							this.openNotificationWithIcon('error')
+							this.openNotificationWithIcon('error');
 						}
 					}
 				});
@@ -69,11 +67,11 @@ class Exam extends PureComponent {
 	}
 
 	render() {
-		console.log('examName:', this);
-		const { Question } = this.props;
+		// console.log('examName:', this);
+		const { Question,routerPath } = this.props;
 		return (
 			<Content style={{ padding: '0 24px', minHeight: 280 }}>
-				<Timer />
+				{routerPath.includes('test') ? <Timer /> : ''}
 				<ExamWrapper>
 					{Question.map((item, index) => {
 						return <QuestionUI key={index} question={item} quesNum={index} />;
@@ -94,15 +92,15 @@ const mapStateToProps = (state) => ({
 	answer: state.getIn([ 'exam', 'answer' ]),
 	correctAnswer: state.getIn([ 'exam', 'correctAnswer' ]), //正确答案数组
 	storeAnswer: state.getIn([ 'exam', 'storeAnswer' ]), //
-	routerPath:state.getIn(['common','routerPath'])
+	routerPath: state.getIn([ 'common', 'routerPath' ])
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getQuestion(exam_id,type) {
-		dispatch(actionCreators.getQuestion(exam_id,type));
+	getQuestion(exam_id, type) {
+		dispatch(actionCreators.getQuestion(exam_id, type));
 	},
-	getScore(score, exam_id,type) {
-		dispatch(actionCreators.getScore(score, exam_id,type));
+	getScore(score, exam_id, type) {
+		dispatch(actionCreators.getScore(score, exam_id, type));
 	}
 });
 

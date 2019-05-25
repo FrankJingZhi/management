@@ -1,49 +1,34 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Button, notification } from 'antd';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
 
-class RegistrationForm extends PureComponent {
+class UserForm extends PureComponent {
 	state = {
 		confirmDirty: false
 	};
 
-	componentDidMount(){
-		// const {addUserInfo,closeAddHandleClick} = this.props;
-		// if(addUserInfo){
-		// 	if(addUserInfo.get('status') === 'success'){
-		// 		this.openNotificationWithIcon('success');
-		// 		closeAddHandleClick();
-		// 	}else{
-		// 		this.openNotificationWithIcon('error');
-		// 	}
-		// }
-	}
-
-	openNotificationWithIcon = (type) => {
-		if(type === 'error'){
-			notification[type]({
-				message: '报错提示',
-				description:
-					'抱歉，用户添加失败，请重试...'
-			});
-		}else{
-			notification[type]({
-				message: '成功提示',
-				description:
-					'用户添加成功！'
-			});
-		}
-	};
-
 	handleSubmit = (e) => {
-		const {handleUserForm,RouterPath,addUserInfo,closeAddHandleClick} = this.props;
+		const {
+			handleUserForm,
+			RouterPath,
+			closeAddHandleClick,
+			openNotificationWithIcon,
+			getTableInfo,
+			name
+		} = this.props;
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
 				console.log('表单输入的值: ', values);
-				handleUserForm(values,RouterPath,(res)=>{
-					console.log('res:',res)
+				handleUserForm(values, RouterPath, (data) => {
+					if (data.status === 'success') {
+						openNotificationWithIcon('success');
+						closeAddHandleClick();
+						getTableInfo(RouterPath);
+					} else {
+						openNotificationWithIcon('error');
+					}
 				});
 			}
 		});
@@ -73,6 +58,7 @@ class RegistrationForm extends PureComponent {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { RouterPath } = this.props;
 
 		const formItemLayout = {
 			labelCol: {
@@ -84,7 +70,7 @@ class RegistrationForm extends PureComponent {
 		};
 		const tailItemLayout = {
 			wrapperCol: {
-				md: { 
+				md: {
 					span: 3,
 					offset: 11
 				}
@@ -98,11 +84,20 @@ class RegistrationForm extends PureComponent {
 						rules: [ { required: true, message: '请输入用户组名！', whitespace: true } ]
 					})(<Input />)}
 				</Form.Item>
-				<Form.Item label="组管理员名">
-					{getFieldDecorator('name', {
-						rules: [ { required: true, message: '请输入组管理员名！', whitespace: true } ]
-					})(<Input />)}
-				</Form.Item>
+				{RouterPath.includes('userManage') && !RouterPath.includes('selfManage') ? (
+					<Form.Item label="组管理员名">
+						{getFieldDecorator('name', {
+							rules: [ { required: true, message: '请输入组管理员名！', whitespace: true } ]
+						})(<Input />)}
+					</Form.Item>
+				) : (
+					<Form.Item label="用户">
+						{getFieldDecorator('name', {
+							rules: [ { required: true, message: '请输入用户名！', whitespace: true } ]
+						})(<Input />)}
+					</Form.Item>
+				)}
+
 				<Form.Item label="密码">
 					{getFieldDecorator('password', {
 						rules: [
@@ -144,16 +139,19 @@ class RegistrationForm extends PureComponent {
 	}
 }
 
-const WrappedRegistrationForm = Form.create({ name: 'register' })(RegistrationForm);
+const WrappedUserForm = Form.create({ name: 'register' })(UserForm);
 
 const mapStateToProps = (state) => ({
-	addUserInfo: state.getIn(['manage','addUserInfo']),	//添加用户是否成功	
-})
+	addUserInfo: state.getIn([ 'manage', 'addUserInfo' ]) //添加用户是否成功
+});
 
 const mapDispatchToProps = (dispatch) => ({
-	handleUserForm(values,RouterPath,callback){
-		dispatch(actionCreators.handleUserForm(values,RouterPath,callback))
+	handleUserForm(values, RouterPath, callback) {
+		dispatch(actionCreators.handleUserForm(values, RouterPath, callback));
+	},
+	getTableInfo(data, name) {
+		dispatch(actionCreators.getTableInfo(data, name));
 	}
-})
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(WrappedRegistrationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedUserForm);

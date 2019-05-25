@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Modal } from 'antd';
+import { Button, Modal, notification } from 'antd';
 import { BtnGroupWrapper } from '../../style';
 import { actionCreators } from '../../store';
 
@@ -11,11 +11,26 @@ class ButtonGroup extends PureComponent {
 		changeAddBtnName(RouterPath);
 	}
 
+	openNotificationWithIcon = (type) => {
+		if (type === 'error') {
+			notification[type]({
+				message: '报错提示',
+				description: '抱歉，数据丢失，请重试...'
+			});
+		} else {
+			notification[type]({
+				message: '成功提示',
+				description: '操作成功！'
+			});
+		}
+	};
+
 	//查看组员or编辑试卷--通过判断是否选中一条数据来做不同的操作
 	checkMembers(type, rows) {
-		const {deleteClick} = this.props;
 		if (rows.size === 1) {
+			const { deleteClick } = this.props;
 			const rowsJS = rows.toJS();
+			console.log('rowsJS:', rowsJS);
 			// 路由跳转
 			if (type === 'editExam') {
 				window.sessionStorage.setItem('examName', rowsJS[0].examName);
@@ -27,10 +42,10 @@ class ButtonGroup extends PureComponent {
 				this.props.history.push({
 					pathname: `/layout/manage/userManage/selfManage`
 				});
-			}else if(type === 'bind'){
+			} else if (type === 'bind') {
 				// window.sessionStorage.setItem('exam', rowsJS[0].name);
-			}else if(type === 'delete'){
-				deleteClick(rowsJS[0].usergroup);
+			} else if (type === 'deleteGroup') {
+				deleteClick(rowsJS[0].usergroup, (data) => {});
 			}
 		} else {
 			Modal.warning({
@@ -40,19 +55,44 @@ class ButtonGroup extends PureComponent {
 		}
 	}
 
-	//绑定试卷
-	bindExam(type, rows) {
+	//批量操作
+	batchOperate(type, rows) {
+		const { deleteSelfClick, getTableInfo, RouterPath, deleteExam } = this.props;
 		if (rows.size >= 1) {
 			const rowsJS = rows.toJS();
-			// console.log('bindExam:',rowsJS);
-			// 路由跳转
-			// 后续操作需要补充
-			if (type === 'group') {
-			} else if (type === 'self') {
+			console.log('rowsJS:', rowsJS);
+			if (type === 'deleteSelf') {
+				let ids = [];
+				for (let i = 0; i < rowsJS.length; i++) {
+					ids.push(rowsJS[i].id);
+				}
+				// console.log('ids:',ids)
+				deleteSelfClick(ids, (data) => {
+					// console.log('deleteSelf:',data)
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
+			} else if (type === 'linkToExamBind') {
+				window.sessionStorage.setItem('userid', rowsJS[0].name);
+				this.props.history.push({
+					pathname: `/layout/manage/userManage/examBind`
+				});
+			} else if (type === 'examBind') {
+				this.openNotificationWithIcon('success');
+			} else if (type === 'deleteExam') {
+				deleteExam(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
 			}
-			this.props.history.push({
-				pathname: `/layout/manage/userManage/examBind`
-			});
 		} else {
 			Modal.warning({
 				title: '警告',
@@ -63,7 +103,7 @@ class ButtonGroup extends PureComponent {
 
 	render() {
 		console.log('btnGroup:', this);
-		const { SelectedRowKeys, SelectedRows, showAddHandleClick, AddBtnName, RouterPath } = this.props;
+		const { SelectedRows, showAddHandleClick, AddBtnName, RouterPath, history } = this.props;
 		return (
 			<BtnGroupWrapper>
 				{/* userManage路由下 */}
@@ -81,8 +121,19 @@ class ButtonGroup extends PureComponent {
 						>
 							查看组员
 						</Button>
-						<Button type="primary" className="btn" onClick={() => this.bindExam('group', SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() => this.batchOperate('examBind', SelectedRows)}
+						>
 							绑定试卷
+						</Button>
+						<Button
+							type="danger"
+							className="btn"
+							onClick={() => this.checkMembers('deleteGroup', SelectedRows)}
+						>
+							删除
 						</Button>
 					</Fragment>
 				) : (
@@ -94,14 +145,29 @@ class ButtonGroup extends PureComponent {
 						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
 						</Button>
-						<Button type="primary" className="btn">
+						{/* <Button type="primary" className="btn">
 							编辑
-						</Button>
-						<Button type="primary" className="btn">
+						</Button> */}
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
+						>
 							统计信息
 						</Button>
-						<Button type="primary" className="btn" onClick={() => this.bindExam('self', SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() => this.batchOperate('examBind', SelectedRows)}
+						>
 							绑定试卷
+						</Button>
+						<Button
+							type="danger"
+							className="btn"
+							onClick={() => this.batchOperate('deleteSelf', SelectedRows)}
+						>
+							删除
 						</Button>
 					</Fragment>
 				) : (
@@ -110,11 +176,15 @@ class ButtonGroup extends PureComponent {
 				{/* examBind路由下 */}
 				{RouterPath.includes('examBind') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.checkMembers('bind',SelectedRows)}>
-							{AddBtnName}
-						</Button>
-						<Button type="primary" className="btn">
+						{/* <Button type="primary" className="btn">
 							修改
+						</Button> */}
+						<Button
+							type="danger"
+							className="btn"
+							onClick={() => this.batchOperate('deleteExam', SelectedRows)}
+						>
+							删除
 						</Button>
 					</Fragment>
 				) : (
@@ -133,6 +203,9 @@ class ButtonGroup extends PureComponent {
 						>
 							编辑试卷
 						</Button>
+						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+							删除
+						</Button>
 					</Fragment>
 				) : (
 					''
@@ -143,16 +216,28 @@ class ButtonGroup extends PureComponent {
 						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
 						</Button>
-						<Button type="primary" className="btn">
+						{/* <Button type="primary" className="btn">
 							编辑
+						</Button> */}
+						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+							删除
 						</Button>
 					</Fragment>
 				) : (
 					''
 				)}
-				<Button type="danger" className="btn" onClick={()=> this.checkMembers('delete',SelectedRows)}>
-					删除
-				</Button>
+				{RouterPath.includes('editExam') ? (
+					<Fragment>
+						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+							{AddBtnName}
+						</Button>
+						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+							删除
+						</Button>
+					</Fragment>
+				) : (
+					''
+				)}
 			</BtnGroupWrapper>
 		);
 	}
@@ -172,8 +257,17 @@ const mapDispatchToProps = (dispatch) => ({
 	changeAddBtnName(RouterPath) {
 		dispatch(actionCreators.changeAddBtnName(RouterPath));
 	},
-	deleteClick(usergroup){
-		dispatch(actionCreators.deleteClick(usergroup));
+	deleteClick(usergroup, callback) {
+		dispatch(actionCreators.deleteClick(usergroup, callback));
+	},
+	deleteSelfClick(ids, callback) {
+		dispatch(actionCreators.deleteSelfClick(ids, callback));
+	},
+	getTableInfo(data) {
+		dispatch(actionCreators.getTableInfo(data));
+	},
+	deleteExam(ids, callback) {
+		dispatch(actionCreators.deleteExam(ids, callback));
 	}
 });
 

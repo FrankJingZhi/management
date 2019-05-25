@@ -1,11 +1,27 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'antd';
+import { Modal,notification } from 'antd';
 import { actionCreators } from '../../store';
-import WrappedRegistrationForm from './userForm';
+import WrappedUserForm from './userForm';
 import WrappedExamForm from './examForm';
+import WrapperQuesForm from './quesForm';
 
 class UserModal extends PureComponent {
+
+	openNotificationWithIcon = (type) => {
+		if (type === 'error') {
+			notification[type]({
+				message: '报错提示',
+				description: '抱歉，数据丢失，请重试...'
+			});
+		} else {
+			notification[type]({
+				message: '成功提示',
+				description: '操作成功！'
+			});
+		}
+	};
+
 	render() {
 		const { ShowUserAddModal, closeAddHandleClick, AddBtnName, RouterPath } = this.props;
 		return (
@@ -19,18 +35,30 @@ class UserModal extends PureComponent {
       {/* userManage路由下添加按钮弹框表单 */}
       {
         RouterPath.includes('userManage') 
-				? <WrappedRegistrationForm 
+				? <WrappedUserForm
 						closeAddHandleClick={closeAddHandleClick}
 						RouterPath={RouterPath}	
+						openNotificationWithIcon={this.openNotificationWithIcon}
 					/>
         : ''
       }
       {/* examManage路由下添加按钮弹框表单 */}
       {
-        RouterPath.includes('examManage') 
-        ? <WrappedRegistrationForm 
+        RouterPath.includes('examManage') && !RouterPath.includes('editExam')
+        ? <WrappedExamForm 
 					closeAddHandleClick={closeAddHandleClick}
 					RouterPath={RouterPath}	
+					openNotificationWithIcon={this.openNotificationWithIcon}
+				/>
+        : ''
+      }
+      {/* editExam路由下添加按钮弹框表单 */}
+      {
+        RouterPath.includes('editExam') 
+        ? <WrapperQuesForm 
+					closeAddHandleClick={closeAddHandleClick}
+					RouterPath={RouterPath}	
+					openNotificationWithIcon={this.openNotificationWithIcon}
 				/>
         : ''
       }

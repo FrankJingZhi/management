@@ -11,12 +11,12 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-24 19:53:01
+ * @lastTime: 2019-05-25 18:16:19
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
  */
-export const getTableInfo = (RouterPath, name) => {
+export const getTableInfo = (RouterPath, userid) => {
 	return (dispatch) => {
 		if (
 			RouterPath.includes('userManage') &&
@@ -42,9 +42,46 @@ export const getTableInfo = (RouterPath, name) => {
 			});
 		} else if (RouterPath.includes('examManage')) {
 			//examManage 试卷信息
-			axios.get('/api/manage/examInfo.json').then((res) => {
-				const data = res.data.data;
-				dispatch(getTableInfoAction(data));
+			axios({
+				url: '/textNet-SSM/test/findAll',
+				method: 'post',
+				data: {
+					start: 1,
+					size: 10
+				}
+			}).then((res) => {
+				const test = res.data.Test;
+				const training = res.data.Training;
+				let examAll = [];
+				test.map((item) => {
+					return examAll.push({
+						key: examAll.length + 1,
+						id:item.id,
+						examName: item.name,
+						type: item.type,
+						difficult: item.difficullty,
+						questionNumbers: `选择:${item.choicequestionid.split(',').length};判断:${item.tofquestionid.split(
+							','
+						).length}`,
+						totalScore: 100,
+						modifyTime: '2019-5-6 16:42:00'
+					});
+				});
+				training.map((item) => {
+					return examAll.push({
+						key: examAll.length + 1,
+						id:item.id,
+						examName: item.name,
+						type: item.type,
+						difficult: item.difficullty,
+						questionNumbers: `选择:${item.choicequestionid.split(',').length};判断:${item.tofquestionid.split(
+							','
+						).length}`,
+						totalScore: 100,
+						modifyTime: ''
+					});
+				});
+				dispatch(getTableInfoAction(examAll));
 			});
 		} else if (RouterPath.includes('questionManage')) {
 			//questionManage 题目
@@ -58,7 +95,7 @@ export const getTableInfo = (RouterPath, name) => {
 				url: '/textNet-SSM/user/findCByGroup',
 				method: 'post',
 				data: {
-					name,
+					name: window.sessionStorage.getItem('name'),
 					start: 1,
 					size: 5
 				}
@@ -73,10 +110,66 @@ export const getTableInfo = (RouterPath, name) => {
 			});
 		} else if (RouterPath.includes('examBind')) {
 			//examBind 绑定试卷
-			axios.get('/api/manage/examBindInfo.json').then((res) => {
-				const data = res.data.data;
-				dispatch(getTableInfoAction(data));
-			});
+			const getTest = () => {
+				return axios({
+					url: '/textNet-SSM/testRecord/findTest',
+					method: 'post',
+					data: {
+						userid: window.sessionStorage.getItem('userid'),
+						start: 1,
+						size: 5,
+						type: '全部',
+						difficullty: '全部'
+					}
+				});
+			};
+			const getTraining = () => {
+				return axios({
+					url: '/textNet-SSM/trainingRecord/findTraining',
+					method: 'post',
+					data: {
+						userid: window.sessionStorage.getItem('userid'),
+						start: 1,
+						size: 5,
+						type: '全部',
+						difficullty: '全部'
+					}
+				});
+			};
+			axios.all([ getTraining(), getTest() ]).then(
+				axios.spread(function(training, test) {
+					const new_test = test.data;
+					const new_training = training.data;
+					let examAll = [];
+					new_test && new_test.map((item) => {
+						return examAll.push({
+							key: examAll.length + 1,
+							id:item.id,
+							examName: item.name,
+							type: item.type,
+							difficult: item.difficullty,
+							questionNumbers: `选择:${item.choicequestionid.split(',')
+								.length};判断:${item.tofquestionid.split(',').length}`,
+							totalScore: 100,
+							testTime: '2019-5-6 16:42:00~2019-5-10 16:42:00'
+						});
+					});
+					new_training && new_training.map((item) => {
+						return examAll.push({
+							key: examAll.length + 1,
+							id:item.id,
+							examName: item.name,
+							type: item.type,
+							difficult: item.difficullty,
+							questionNumbers: `选择:${item.choicequestionid.split(',')
+								.length};判断:${item.tofquestionid.split(',').length}`,
+							totalScore: 100,
+							testTime: ''
+						});
+					});
+					dispatch(getTableInfoAction(examAll));
+				})
+			);
 		}
 	};
 };
@@ -249,12 +342,14 @@ export const changeAddBtnName = (RouterPath) => {
 		data = '添加用户组';
 	} else if (RouterPath.includes('selfManage')) {
 		data = '添加用户';
-	} else if (RouterPath.includes('examManage')) {
+	} else if (RouterPath.includes('examManage') && !RouterPath.includes('editExam')) {
 		data = '添加试卷';
 	} else if (RouterPath.includes('questionManage')) {
 		data = '添加题目';
 	} else if (RouterPath.includes('examBind')) {
 		data = '绑定试卷';
+	} else if (RouterPath.includes('editExam')) {
+		data = '添加题目';
 	}
 	return {
 		type: containts.CHANGE_ADD_BTN_NAME,
@@ -274,17 +369,17 @@ export const clearSelectedRowsAndKeys = () => ({
  * @description: userForm表单提交
  * @since: 2019-05-24 15:40:45
  */
-export const handleUserForm = (data,RouterPath,callback) => {
+export const handleUserForm = (data, RouterPath, callback) => {
 	let new_data = {
 		name: data.name,
 		password: data.password,
-		usergroup: data.usergroup,
+		usergroup: data.groupname,
 		phone: data.phone
 	};
 	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage')) {
-		new_data = Object.assign(new_data,{permission:'b'});
+		new_data = Object.assign(new_data, { permission: 'b' });
 	} else {
-		new_data = Object.assign(new_data,{permission:'c'});
+		new_data = Object.assign(new_data, { permission: 'c' });
 	}
 	return (dispatch) => {
 		axios({
@@ -293,33 +388,90 @@ export const handleUserForm = (data,RouterPath,callback) => {
 			data: new_data
 		}).then((res) => {
 			const data = res.data;
-			callback(data)
-			// dispatch(handleUserFormAction(data));
+			callback(data);
 		});
 	};
 };
 
-const handleUserFormAction = (data)=>({
-	type: containts.HANDLE_USER_FORM,
-	data:fromJS(data)
-})
-
-export const deleteClick = (usergroup) => {
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 删除用户组及名下所有用户
+ * @since: 2019-05-25 14:21:24
+ */
+export const deleteClick = (usergroup, callback) => {
 	return (dispatch) => {
 		axios({
-			url:'/textNet-SSM/user/removeByGroup',
-			method:'post',
-			data:{
-				group:usergroup
+			url: '/textNet-SSM/user/removeByGroup',
+			method: 'post',
+			data: {
+				group: usergroup
 			}
-		}).then((res)=>{
+		}).then((res) => {
 			const data = res.data;
-			dispatch(deleteClickAction(data))
-		})
+			callback(data);
+		});
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 删除普通用户，可批量删除
+ * @since: 2019-05-25 17:26:35
+ */
+export const deleteSelfClick = (ids, callback) => {
+	return (dispatch) => {
+		axios({
+			url: '/textNet-SSM/user/removeByID',
+			method: 'post',
+			data: ids
+		}).then((res) => {
+			const data = res.data;
+			callback(data);
+		});
+	};
+};
+
+export const deleteExam = (data,callback) => {
+	console.log('deleteExam:',data);
+	let trainingids = [];
+	let testids = [];
+	for(let i=0;i<data.length;i++){
+		if(data[i].testTime){
+			trainingids.push(data[i].id)
+		}else{
+			testids.push(data[i].id)
+		}
+	}
+	console.log('trainingids:',trainingids,testids)
+	return(dispatch)=>{
+		if(data.testTime){
+			axios({
+				url:'/textNet-SSM/testRecord/remove',
+				method:'post',
+				data:{
+					userid:window.sessionStorage.getItem('userid'),
+					ids:testids
+				}
+			}).then((res)=>{
+				const data = res.data;
+				callback(data);
+			})
+		}else{
+			axios({
+				url:'/textNet-SSM/trainingRecord/remove',
+				method:'post',
+				data:{
+					userid:window.sessionStorage.getItem('userid'),
+					ids:trainingids
+				}
+			}).then((res)=>{
+				const data = res.data;
+				callback(data);
+			})
+		}
 	}
 }
-
-const deleteClickAction = (data) => ({
-	type:containts.DELETE_CLICK,
-	data: fromJS(data)
-})

@@ -104,6 +104,6 @@ class QuesForm extends PureComponent {
 		);
 	}
 }
-const QuesFormWrapper = Form.create({ name: 'register' })(QuesForm);
+const WrapperQuesForm = Form.create({ name: 'register' })(QuesForm);
 
-export default withRouter(QuesFormWrapper);
+export default withRouter(WrapperQuesForm);

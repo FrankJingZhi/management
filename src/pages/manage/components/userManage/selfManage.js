@@ -8,12 +8,11 @@ class SelfManage extends PureComponent {
 	render() {
 		console.log('selfManage:', this);
 		const { history } = this.props;
-		const name = window.sessionStorage.getItem('name');
 
 		return (
 			<Fragment>
 				<ButtonGroup history={history} />
-				<TableUI name={name} />
+				<TableUI />
 				<UserModal />
 			</Fragment>
 		);

@@ -6,8 +6,8 @@ import { actionCreators } from '../../store'; //从store文件夹引入actionCre
 
 class TableUI extends PureComponent {
 	componentDidMount() {
-        const {RouterPath,getTableInfo,getColumnsInfo,name,clearSelectedRowsAndKeys} = this.props;
-		name ? getTableInfo(RouterPath,name) : getTableInfo(RouterPath);
+        const {RouterPath,getTableInfo,getColumnsInfo,clearSelectedRowsAndKeys} = this.props;
+		getTableInfo(RouterPath);
 		getColumnsInfo(RouterPath);
 		clearSelectedRowsAndKeys();
 	}
@@ -26,7 +26,11 @@ class TableUI extends PureComponent {
 		};
 
 		return (
-				<Table rowSelection={rowSelection} columns={columnsJS} dataSource={dataSourceJS} />
+				<Table 
+					rowSelection={rowSelection} 
+					columns={columnsJS} 
+					dataSource={dataSourceJS} 
+				/>
 		);
 	}
 }
