@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Radio, Button, notification,Cascader } from 'antd';
+import { connect } from 'react-redux';
+import { actionCreators } from '../../store';
 
 const RadioGroup = Radio.Group;
 
@@ -9,13 +11,20 @@ class ExamForm extends PureComponent {
 	};
 
 	handleSubmit = (e) => {
-		const { closeAddHandleClick } = this.props;
+		const { closeAddHandleClick,handleExamForm,getTableInfo,RouterPath,openNotificationWithIcon } = this.props;
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
 				console.log('表单输入的值: ', values);
-				this.openNotificationWithIcon('success');
-				closeAddHandleClick();
+				handleExamForm(values, RouterPath, (data) => {
+					if (data.status === 'success') {
+						openNotificationWithIcon('success');
+						closeAddHandleClick();
+						getTableInfo(RouterPath);
+					} else {
+						openNotificationWithIcon('error');
+					}
+				});
 			}
 		});
 	};
@@ -32,13 +41,6 @@ class ExamForm extends PureComponent {
 				description: '操作成功！'
 			});
 		}
-	};
-
-	onChange = (e) => {
-		console.log('radio checked', e.target.value);
-		this.setState({
-			value: e.target.value
-		});
 	};
 
 	render() {
@@ -62,7 +64,7 @@ class ExamForm extends PureComponent {
 			}
 		};
 
-		const residences = [
+		const tip = [
 			{
 				value: 'PHP',
 				label: 'PHP'
@@ -89,19 +91,48 @@ class ExamForm extends PureComponent {
 			}
 		];
 
+		const type = [
+			{
+				value: 'test',
+				label: '测试'
+			},
+			{
+				value: 'training',
+				label: '训练'
+			},
+		]
+
+		const difficult = [
+			{
+				value: '简单',
+				label: '简单'
+			},
+			{
+				value: '普通',
+				label: '普通'
+			},
+			{
+				value: '困难',
+				label: '困难'
+			},
+		]
+
 		return (
 			<Form {...formItemLayout} onSubmit={this.handleSubmit}>
 				<Form.Item label="难度">
-					<RadioGroup onChange={this.onChange} value={this.state.value}>
-						<Radio value={1}>简单</Radio>
-						<Radio value={2}>普通</Radio>
-						<Radio value={3}>困难</Radio>
-					</RadioGroup>
+					{getFieldDecorator('difficult', {
+						rules: [ { type: 'array', required: true, message: '请输入试卷难度！' } ]
+					})(<Cascader options={difficult} />)}
 				</Form.Item>
 				<Form.Item label="类型">
-					{getFieldDecorator('residence', {
+					{getFieldDecorator('type', {
 						rules: [ { type: 'array', required: true, message: '请输入试卷类型！' } ]
-					})(<Cascader options={residences} />)}
+					})(<Cascader options={type} />)}
+				</Form.Item>
+				<Form.Item label="标签">
+					{getFieldDecorator('tip', {
+						rules: [ { type: 'array', required: true, message: '请输入试卷标签！' } ]
+					})(<Cascader options={tip} />)}
 				</Form.Item>
 				<Form.Item label="试卷名">
 					{getFieldDecorator('examName', {
@@ -119,4 +150,13 @@ class ExamForm extends PureComponent {
 }
 const WrappedExamForm = Form.create({ name: 'registerExam' })(ExamForm);
 
-export default WrappedExamForm;
+const mapDispatchToProps = (dispatch) => ({
+	handleExamForm(values, RouterPath, callback) {
+		dispatch(actionCreators.handleExamForm(values, RouterPath, callback));
+	},
+	getTableInfo(data, name) {
+		dispatch(actionCreators.getTableInfo(data, name));
+	}
+});
+
+export default connect(null,mapDispatchToProps)(WrappedExamForm);

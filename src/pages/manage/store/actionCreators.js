@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-26 09:35:10
+ * @lastTime: 2019-05-26 17:48:02
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -21,7 +21,8 @@ export const getTableInfo = (RouterPath, userid) => {
 		if (
 			RouterPath.includes('userManage') &&
 			!RouterPath.includes('selfManage') &&
-			!RouterPath.includes('examBindInfo')
+			!RouterPath.includes('examBindInfo') &&
+			!RouterPath.includes('examBind')
 		) {
 			//userManage 超级管理员
 			axios({
@@ -40,7 +41,10 @@ export const getTableInfo = (RouterPath, userid) => {
 				// console.log('userManage:',data);
 				dispatch(getTableInfoAction(data));
 			});
-		} else if (RouterPath.includes('examManage')) {
+		} else if (
+			(RouterPath.includes('examManage') && !RouterPath.includes('editExam')) ||
+			RouterPath.includes('examBind')
+		) {
 			//examManage 试卷信息
 			axios({
 				url: '/textNet-SSM/test/findAll',
@@ -56,13 +60,14 @@ export const getTableInfo = (RouterPath, userid) => {
 				test.map((item) => {
 					return examAll.push({
 						key: examAll.length + 1,
-						id:item.id,
+						id: item.id,
+						tip: 'test',
 						examName: item.name,
 						type: item.type,
 						difficult: item.difficullty,
-						questionNumbers: `选择:${item.choicequestionid.split(',').length};判断:${item.tofquestionid.split(
-							','
-						).length}`,
+						questionNumbers: `选择:${item.choicequestionid &&
+							item.choicequestionid.split(',').length};判断:${item.tofquestionid &&
+							item.tofquestionid.split(',').length}`,
 						totalScore: 100,
 						modifyTime: '2019-5-6 16:42:00'
 					});
@@ -70,32 +75,81 @@ export const getTableInfo = (RouterPath, userid) => {
 				training.map((item) => {
 					return examAll.push({
 						key: examAll.length + 1,
-						id:item.id,
+						id: item.id,
+						tip: 'training',
 						examName: item.name,
 						type: item.type,
 						difficult: item.difficullty,
-						questionNumbers: `选择:${item.choicequestionid.split(',').length};判断:${item.tofquestionid.split(
-							','
-						).length}`,
+						questionNumbers: `选择:${item.choicequestionid &&
+							item.choicequestionid.split(',').length};判断:${item.tofquestionid &&
+							item.tofquestionid.split(',').length}`,
 						totalScore: 100,
-						modifyTime: ''
+						modifyTime: '2019-5-6 16:42:00'
 					});
 				});
 				dispatch(getTableInfoAction(examAll));
 			});
 		} else if (RouterPath.includes('questionManage')) {
-			//questionManage 题目
-			axios.get('/api/manage/questionInfo.json').then((res) => {
-				const data = res.data.data;
-				dispatch(getTableInfoAction(data));
-			});
+			const getChoice = () => {
+				return axios({
+					url: '/textNet-SSM/choicequestion/query',
+					method: 'post',
+					data: {
+						start: 1,
+						size: 10,
+						type: '全部'
+					}
+				});
+			};
+			const getTof = () => {
+				return axios({
+					url: '/textNet-SSM/tofquestion/query',
+					method: 'post',
+					data: {
+						start: 1,
+						size: 10,
+						type: '全部'
+					}
+				});
+			};
+			axios.all([ getChoice(), getTof() ]).then(
+				axios.spread(function(choice, tof) {
+					const new_choice = choice.data;
+					const new_tof = tof.data;
+					let quesAll = [];
+					// console.log('new_choice:',new_choice,new_tof)
+					new_choice &&
+						new_choice.map((item) => {
+							return quesAll.push({
+								key: quesAll.length + 1,
+								id: item.id,
+								question: item.name,
+								tip: item.type,
+								type: '选择',
+								modifyTime: '2019-5-20 15:20'
+							});
+						});
+					new_tof &&
+						new_tof.map((item) => {
+							return quesAll.push({
+								key: quesAll.length + 1,
+								id: item.id,
+								question: item.name,
+								tip: item.type,
+								type: '判断',
+								modifyTime: '2019-5-20 15:20'
+							});
+						});
+					dispatch(getTableInfoAction(quesAll));
+				})
+			);
 		} else if (RouterPath.includes('selfManage')) {
 			//selfManage 组管理员
 			axios({
 				url: '/textNet-SSM/user/findCByGroup',
 				method: 'post',
 				data: {
-					name: window.sessionStorage.getItem('name'),
+					name: window.sessionStorage.getItem('userid'),
 					start: 1,
 					size: 5
 				}
@@ -109,7 +163,6 @@ export const getTableInfo = (RouterPath, userid) => {
 				dispatch(getTableInfoAction(data));
 			});
 		} else if (RouterPath.includes('examBindInfo')) {
-			//examBindInfo 绑定试卷
 			const getTest = () => {
 				return axios({
 					url: '/textNet-SSM/testRecord/findTest',
@@ -141,35 +194,75 @@ export const getTableInfo = (RouterPath, userid) => {
 					const new_test = test.data;
 					const new_training = training.data;
 					let examAll = [];
-					new_test && new_test.map((item) => {
-						return examAll.push({
-							key: examAll.length + 1,
-							id:item.id,
-							examName: item.name,
-							type: item.type,
-							difficult: item.difficullty,
-							questionNumbers: `选择:${item.choicequestionid.split(',')
-								.length};判断:${item.tofquestionid.split(',').length}`,
-							totalScore: 100,
-							testTime: '2019-5-6 16:42:00~2019-5-10 16:42:00'
+					new_test &&
+						new_test.map((item) => {
+							return examAll.push({
+								key: examAll.length + 1,
+								id: item.id,
+								examName: item.name,
+								type: item.type,
+								difficult: item.difficullty,
+								questionNumbers: `选择:${item.choicequestionid.split(',')
+									.length};判断:${item.tofquestionid.split(',').length}`,
+								totalScore: 100,
+								testTime: '2019-5-6 16:42:00~2019-5-10 16:42:00'
+							});
 						});
-					});
-					new_training && new_training.map((item) => {
-						return examAll.push({
-							key: examAll.length + 1,
-							id:item.id,
-							examName: item.name,
-							type: item.type,
-							difficult: item.difficullty,
-							questionNumbers: `选择:${item.choicequestionid.split(',')
-								.length};判断:${item.tofquestionid.split(',').length}`,
-							totalScore: 100,
-							testTime: ''
+					new_training &&
+						new_training.map((item) => {
+							return examAll.push({
+								key: examAll.length + 1,
+								id: item.id,
+								examName: item.name,
+								type: item.type,
+								difficult: item.difficullty,
+								questionNumbers: `选择:${item.choicequestionid.split(',')
+									.length};判断:${item.tofquestionid.split(',').length}`,
+								totalScore: 100,
+								testTime: ''
+							});
 						});
-					});
 					dispatch(getTableInfoAction(examAll));
 				})
 			);
+		} else if (RouterPath.includes('editExam')) {
+			const tip = window.sessionStorage.getItem('tip');
+			let url = '';
+			if (tip === 'training') {
+				url = `/textNet-SSM/training/findTrainingByID`;
+			} else {
+				url = `/textNet-SSM/test/findTestByID`;
+			}
+			axios({
+				url,
+				method: 'post',
+				data: {
+					id: window.sessionStorage.getItem('examid'),
+					start: 1,
+					size: 10
+				}
+			}).then((res) => {
+				const data = res.data;
+				let new_data = [];
+				data &&
+					data.map((item) => {
+						let type = '';
+						if (item.istrue === 'true' || item.istrue === 'false') {
+							type = '判断';
+						} else {
+							type = '选择';
+						}
+						return new_data.push({
+							key: new_data.length + 1,
+							id: item.id,
+							question: item.name,
+							tip: item.type,
+							type: type,
+							modifyTime: '2019-5-10 16:42:00'
+						});
+					});
+				dispatch(getTableInfoAction(new_data));
+			});
 		}
 	};
 };
@@ -203,7 +296,12 @@ export const changeSelectedRows = (data) => ({
  */
 export const getColumnsInfo = (data) => {
 	let columns = [];
-	if (data.includes('userManage') && !data.includes('selfManage') && !data.includes('examBindInfo')) {
+	if (
+		data.includes('userManage') &&
+		!data.includes('selfManage') &&
+		!data.includes('examBindInfo') &&
+		!data.includes('examBind')
+	) {
 		columns = [
 			{
 				title: '用户组',
@@ -218,7 +316,7 @@ export const getColumnsInfo = (data) => {
 				dataIndex: 'phone'
 			}
 		];
-	} else if (data.includes('examManage')) {
+	} else if ((data.includes('examManage') && !data.includes('editExam')) || data.includes('examBind')) {
 		columns = [
 			{
 				title: '试卷名',
@@ -306,6 +404,21 @@ export const getColumnsInfo = (data) => {
 				dataIndex: 'testTime'
 			}
 		];
+	} else if (data.includes('editExam')) {
+		columns = [
+			{
+				title: '题目',
+				dataIndex: 'question'
+			},
+			{
+				title: '标签',
+				dataIndex: 'tip'
+			},
+			{
+				title: '修改时间',
+				dataIndex: 'modifyTime'
+			}
+		];
 	}
 	return {
 		type: containts.GET_COLUMNS_INFO,
@@ -338,7 +451,12 @@ export const closeAddHandleClick = () => ({
  */
 export const changeAddBtnName = (RouterPath) => {
 	let data = '';
-	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage') && !RouterPath.includes('examBindInfo')) {
+	if (
+		RouterPath.includes('userManage') &&
+		!RouterPath.includes('selfManage') &&
+		!RouterPath.includes('examBindInfo') &&
+		!RouterPath.includes('examBind')
+	) {
 		data = '添加用户组';
 	} else if (RouterPath.includes('selfManage')) {
 		data = '添加用户';
@@ -347,6 +465,8 @@ export const changeAddBtnName = (RouterPath) => {
 	} else if (RouterPath.includes('questionManage') && !RouterPath.includes('quesBind')) {
 		data = '添加题目';
 	} else if (RouterPath.includes('examBindInfo')) {
+		data = '添加试卷';
+	} else if (RouterPath.includes('examBind')) {
 		data = '添加试卷';
 	} else if (RouterPath.includes('editExam')) {
 		data = '添加题目';
@@ -388,6 +508,32 @@ export const handleUserForm = (data, RouterPath, callback) => {
 			url: '/textNet-SSM/user/add',
 			method: 'post',
 			data: new_data
+		}).then((res) => {
+			const data = res.data;
+			callback(data);
+		});
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: examForm提交--新增试卷
+ * @since: 2019-05-26 13:13:37
+ */
+export const handleExamForm = (data, RouterPath, callback) => {
+	return () => {
+		axios({
+			url: `/textNet-SSM/${data.type[0]}/add`,
+			method: 'post',
+			data: {
+				name: data.examName,
+				type: data.tip[0],
+				difficullty: data.difficult[0]
+				// choicequestionid:,
+				// tofquestionid:,
+			}
 		}).then((res) => {
 			const data = res.data;
 			callback(data);
@@ -444,44 +590,218 @@ export const deleteSelfClick = (ids, callback) => {
  * @description: 删除试卷记录，可批量删除
  * @since: 2019-05-25 19:03:46
  */
-export const deleteExam = (data,callback) => {
+export const deleteExam = (data, callback) => {
 	// console.log('deleteExam:',data);
 	let trainingids = [];
 	let testids = [];
-	for(let i=0;i<data.length;i++){
-		if(data[i].testTime){
-			trainingids.push(data[i].id)
-		}else{
-			testids.push(data[i].id)
+	for (let i = 0; i < data.length; i++) {
+		if (data[i].testTime) {
+			testids.push(data[i].id);
+		} else {
+			trainingids.push(data[i].id);
 		}
 	}
 	// console.log('trainingids:',trainingids,testids)
-	return(dispatch)=>{
-		if(data.testTime){
+	return () => {
+		for (let i = 0; i < testids.length; i++) {
 			axios({
-				url:'/textNet-SSM/testRecord/remove',
-				method:'post',
-				data:{
-					userid:window.sessionStorage.getItem('userid'),
-					ids:testids
+				url: '/textNet-SSM/testRecord/remove',
+				method: 'post',
+				data: {
+					userid: window.sessionStorage.getItem('userid'),
+					ids: testids
 				}
-			}).then((res)=>{
+			}).then((res) => {
 				const data = res.data;
 				callback(data);
-			})
-		}else{
+			});
+		}
+		for (let i = 0; i < trainingids.length; i++) {
 			axios({
-				url:'/textNet-SSM/trainingRecord/remove',
-				method:'post',
-				data:{
-					userid:window.sessionStorage.getItem('userid'),
-					ids:trainingids
+				url: '/textNet-SSM/trainingRecord/remove',
+				method: 'post',
+				data: {
+					userid: window.sessionStorage.getItem('userid'),
+					ids: trainingids
 				}
-			}).then((res)=>{
+			}).then((res) => {
 				const data = res.data;
 				callback(data);
-			})
+			});
+		}
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 给用户添加试卷
+ * @since: 2019-05-26 11:56:17
+ */
+export const addExamToUser = (data, callback) => {
+	return () => {
+		for (let i = 0; i < data.length; i++) {
+			console.log('data:', data, `/textNet-SSM/${data[i].tip}Record/add`);
+			axios({
+				url: `/textNet-SSM/${data[i].tip}Record/add`,
+				method: 'post',
+				data: {
+					userid: window.sessionStorage.getItem('userid'),
+					testid: data[i].id
+				}
+			}).then((res) => {
+				const data = res.data;
+				callback(data);
+			});
+		}
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 批量删除某试卷下的题目
+ * @since: 2019-05-26 16:43:33
+ */
+export const deleteQues = (data, callback) => {
+	return () => {
+		const tip = window.sessionStorage.getItem('tip');
+		let choice = [];
+		let tof = [];
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].type === '选择') {
+				choice.push(data[i].id);
+			} else {
+				tof.push(data[i].id);
+			}
+		}
+		axios({
+			url: `/textNet-SSM/${tip}/removeQuestion`,
+			method: 'post',
+			data: {
+				id: 1,
+				choicequestionid: choice.join(','),
+				tofquestionid: tof.join(',')
+			}
+		}).then((res) => {
+			const data = res.data;
+			callback(data);
+		});
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 批量删除试卷
+ * @since: 2019-05-26 16:45:20
+ */
+export const deleteExam1 = (data, callback) => {
+	return () => {
+		let trainingids = [];
+		let testids = [];
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].tip === 'training') {
+				trainingids.push(+data[i].id);
+			} else {
+				testids.push(+data[i].id);
+			}
+		}
+		// console.log('reainingids:', trainingids, testids);
+		trainingids != false &&
+			axios({
+				url: '/textNet-SSM/training/remove',
+				method: 'post',
+				data: trainingids
+			}).then((res) => {
+				const data = res.data;
+				callback(data);
+			});
+		testids != false &&
+			axios({
+				url: '/textNet-SSM/test/remove',
+				method: 'post',
+				data: testids
+			}).then((res) => {
+				const data = res.data;
+				callback(data);
+			});
+	};
+};
+
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 批量向试卷中绑定题目
+ * @since: 2019-05-26 17:31:16
+ */
+export const quesBind = (data, callback) => {
+	const tip = window.sessionStorage.getItem('tip');
+	const examid = window.sessionStorage.getItem('examid');
+	let choiceids = [];
+	let tofids = [];
+	for (let i = 0; i < data.length; i++) {
+		if (data[i].type === '选择') {
+			choiceids.push(+data[i].id);
+		} else {
+			tofids.push(+data[i].id);
 		}
 	}
-}
+	return () => {
+		axios({
+			url: `/textNet-SSM/${tip}/addQuestion`,
+			method: 'post',
+			data: {
+				id: examid,
+				choicequestionid: choiceids.join(','),
+				tofquestionid: tofids.join(',')
+			}
+		}).then((res) => {
+			const data = res.data;
+			callback(data);
+		});
+	};
+};
 
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 批量删除题目
+ * @since: 2019-05-26 17:45:52
+ */
+export const deleteQues1 = (data, callback) => {
+	let choiceids = [];
+	let tofids = [];
+	for (let i = 0; i < data.length; i++) {
+		if (data[i].type === '选择') {
+			choiceids.push(+data[i].id);
+		} else {
+			tofids.push(+data[i].id);
+		}
+	}
+	return () => {
+		choiceids != false &&
+			axios({
+				url: `/textNet-SSM/choicequestion/remove`,
+				method: 'post',
+				data: choiceids
+			}).then((res) => {
+				const data = res.data;
+				callback(data);
+			});
+		tofids != false &&
+			axios({
+				url: `/textNet-SSM/tofquestion/remove`,
+				method: 'post',
+				data: tofids
+			}).then((res) => {
+				const data = res.data;
+				callback(data);
+			});
+	};
+};

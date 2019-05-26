@@ -141,9 +141,6 @@ class UserForm extends PureComponent {
 
 const WrappedUserForm = Form.create({ name: 'register' })(UserForm);
 
-const mapStateToProps = (state) => ({
-	addUserInfo: state.getIn([ 'manage', 'addUserInfo' ]) //添加用户是否成功
-});
 
 const mapDispatchToProps = (dispatch) => ({
 	handleUserForm(values, RouterPath, callback) {
@@ -154,4 +151,4 @@ const mapDispatchToProps = (dispatch) => ({
 	}
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedUserForm);
+export default connect(null, mapDispatchToProps)(WrappedUserForm);

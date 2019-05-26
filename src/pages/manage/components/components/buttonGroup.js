@@ -33,21 +33,22 @@ class ButtonGroup extends PureComponent {
 			console.log('rowsJS:', rowsJS);
 			// 路由跳转
 			if (type === 'editExam') {
-				window.sessionStorage.setItem('examName', rowsJS[0].examName);
+				window.sessionStorage.setItem('examid', rowsJS[0].id);
+				window.sessionStorage.setItem('tip', rowsJS[0].tip);
 				this.props.history.push({
 					pathname: `/layout/manage/examManage/editExam`
 				});
 			} else if (type === 'checkMembers') {
-				window.sessionStorage.setItem('name', rowsJS[0].name);
+				window.sessionStorage.setItem('userid', rowsJS[0].name);
 				this.props.history.push({
 					pathname: `/layout/manage/userManage/selfManage`
 				});
 			} else if (type === 'deleteGroup') {
 				deleteClick(rowsJS[0].usergroup, (data) => {});
-			} else if(type === 'linkToQueBind'){
-				window.sessionStorage.setItem('examName', rowsJS[0].name);
+			} else if (type === 'linkToExamBindInfo') {
+				window.sessionStorage.setItem('userid', rowsJS[0].name);
 				this.props.history.push({
-					pathname: `/layout/manage/questionManage/quesBind`
+					pathname: `/layout/manage/userManage/examBindInfo`
 				});
 			}
 		} else {
@@ -60,7 +61,17 @@ class ButtonGroup extends PureComponent {
 
 	//批量操作
 	batchOperate(type, rows) {
-		const { deleteSelfClick, getTableInfo, RouterPath, deleteExam } = this.props;
+		const {
+			deleteSelfClick,
+			getTableInfo,
+			RouterPath,
+			deleteExam,
+			deleteExam1,
+			addExamToUser,
+			deleteQues,
+			quesBind,
+			deleteQues1
+		} = this.props;
 		if (rows.size >= 1) {
 			const rowsJS = rows.toJS();
 			console.log('rowsJS:', rowsJS);
@@ -79,22 +90,16 @@ class ButtonGroup extends PureComponent {
 						this.openNotificationWithIcon('error');
 					}
 				});
-			} else if (type === 'linkToExamBindInfo') {
-				window.sessionStorage.setItem('userid', rowsJS[0].name);
-				this.props.history.push({
-					pathname: `/layout/manage/userManage/examBindInfo`
+			} else if (type === 'examBind') {
+				addExamToUser(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
 				});
-			} else if (type === 'linkToExamBind') {
-				// 向选择的用户添加试卷
-				// window.sessionStorage.setItem('', rowsJS[0].name);
-				this.props.history.push({
-					pathname: `/layout/manage/userManage/examBind`
-				});
-			} else if (type === 'examBindInfo') {
-				this.openNotificationWithIcon('success');
-			} else if(type === 'examBind'){
-				//把选择的试卷添加给选择的用户
-			}else if (type === 'deleteExam') {
+			} else if (type === 'deleteExam') {
 				deleteExam(rowsJS, (data) => {
 					if (data.status === 'success') {
 						this.openNotificationWithIcon('success');
@@ -103,8 +108,42 @@ class ButtonGroup extends PureComponent {
 						this.openNotificationWithIcon('error');
 					}
 				});
-			} else if(type === 'quesBind'){
-				//把题目添加给选择的试卷
+			} else if (type === 'deleteExam1') {
+				deleteExam1(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
+			} else if (type === 'quesBind') {
+				quesBind(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
+			} else if (type === 'deleteQues') {
+				deleteQues(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
+			} else if(type === 'deleteQues1'){
+				deleteQues1(rowsJS, (data) => {
+					if (data.status === 'success') {
+						this.openNotificationWithIcon('success');
+						getTableInfo(RouterPath);
+					} else {
+						this.openNotificationWithIcon('error');
+					}
+				});
 			}
 		} else {
 			Modal.warning({
@@ -122,7 +161,8 @@ class ButtonGroup extends PureComponent {
 				{/* userManage路由下 */}
 				{RouterPath.includes('userManage') &&
 				!RouterPath.includes('selfManage') &&
-				!RouterPath.includes('examBindInfo') ? (
+				!RouterPath.includes('examBindInfo') &&
+				!RouterPath.includes('examBind') ? (
 					<Fragment>
 						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
@@ -134,13 +174,13 @@ class ButtonGroup extends PureComponent {
 						>
 							查看组员
 						</Button>
-						<Button
+						{/* <Button
 							type="primary"
 							className="btn"
 							onClick={() => this.batchOperate('linkToExamBindInfo', SelectedRows)}
 						>
 							绑定试卷
-						</Button>
+						</Button> */}
 						<Button
 							type="danger"
 							className="btn"
@@ -171,7 +211,7 @@ class ButtonGroup extends PureComponent {
 						<Button
 							type="primary"
 							className="btn"
-							onClick={() => this.batchOperate('linkToExamBindInfo', SelectedRows)}
+							onClick={() => this.checkMembers('linkToExamBindInfo', SelectedRows)}
 						>
 							绑定试卷
 						</Button>
@@ -189,7 +229,14 @@ class ButtonGroup extends PureComponent {
 				{/* examBindInfo路由下 */}
 				{RouterPath.includes('examBindInfo') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.checkMembers('linkToExamBind',SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() =>
+								this.props.history.push({
+									pathname: `/layout/manage/userManage/examBind`
+								})}
+						>
 							{AddBtnName}
 						</Button>
 						<Button
@@ -206,7 +253,11 @@ class ButtonGroup extends PureComponent {
 				{/* examBind路由下 */}
 				{RouterPath.includes('examBind') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.batchOperate('examBind', SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() => this.batchOperate('examBind', SelectedRows)}
+						>
 							{AddBtnName}
 						</Button>
 					</Fragment>
@@ -226,7 +277,11 @@ class ButtonGroup extends PureComponent {
 						>
 							编辑试卷
 						</Button>
-						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+						<Button
+							type="danger"
+							className="btn"
+							onClick={() => this.batchOperate('deleteExam1', SelectedRows)}
+						>
 							删除
 						</Button>
 					</Fragment>
@@ -242,7 +297,7 @@ class ButtonGroup extends PureComponent {
 						{/* <Button type="primary" className="btn">
 							编辑
 						</Button> */}
-						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+						<Button type="danger" className="btn" onClick={() => this.batchOperate('deleteQues1', SelectedRows)}>
 							删除
 						</Button>
 					</Fragment>
@@ -252,10 +307,21 @@ class ButtonGroup extends PureComponent {
 				{/* editExam路由 */}
 				{RouterPath.includes('editExam') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.checkMembers('linkToQueBind',SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() =>
+								this.props.history.push({
+									pathname: `/layout/manage/questionManage/quesBind`
+								})}
+						>
 							{AddBtnName}
 						</Button>
-						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
+						<Button
+							type="danger"
+							className="btn"
+							onClick={() => this.batchOperate('deleteQues', SelectedRows)}
+						>
 							删除
 						</Button>
 					</Fragment>
@@ -265,7 +331,11 @@ class ButtonGroup extends PureComponent {
 				{/* quesBind路由 */}
 				{RouterPath.includes('quesBind') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => this.batchOperate('quesBind', SelectedRows)}>
+						<Button
+							type="primary"
+							className="btn"
+							onClick={() => this.batchOperate('quesBind', SelectedRows)}
+						>
 							{AddBtnName}
 						</Button>
 					</Fragment>
@@ -302,7 +372,23 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 	deleteExam(ids, callback) {
 		dispatch(actionCreators.deleteExam(ids, callback));
-	}
+	},
+	deleteExam1(data, callback) {
+		dispatch(actionCreators.deleteExam1(data, callback));
+	},
+	addExamToUser(data, callback) {
+		dispatch(actionCreators.addExamToUser(data, callback));
+	},
+	deleteQues(data, callback) {
+		dispatch(actionCreators.deleteQues(data, callback));
+	},
+	quesBind(data, callback) {
+		dispatch(actionCreators.quesBind(data, callback));
+	},
+	deleteQues1(data, callback) {
+		dispatch(actionCreators.deleteQues1(data, callback));
+	},
+
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ButtonGroup));
