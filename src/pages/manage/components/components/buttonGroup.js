@@ -42,10 +42,13 @@ class ButtonGroup extends PureComponent {
 				this.props.history.push({
 					pathname: `/layout/manage/userManage/selfManage`
 				});
-			} else if (type === 'bind') {
-				// window.sessionStorage.setItem('exam', rowsJS[0].name);
 			} else if (type === 'deleteGroup') {
 				deleteClick(rowsJS[0].usergroup, (data) => {});
+			} else if(type === 'linkToQueBind'){
+				window.sessionStorage.setItem('examName', rowsJS[0].name);
+				this.props.history.push({
+					pathname: `/layout/manage/questionManage/quesBind`
+				});
 			}
 		} else {
 			Modal.warning({
@@ -81,6 +84,12 @@ class ButtonGroup extends PureComponent {
 				this.props.history.push({
 					pathname: `/layout/manage/userManage/examBindInfo`
 				});
+			} else if (type === 'linkToExamBind') {
+				// 向选择的用户添加试卷
+				// window.sessionStorage.setItem('', rowsJS[0].name);
+				this.props.history.push({
+					pathname: `/layout/manage/userManage/examBind`
+				});
 			} else if (type === 'examBindInfo') {
 				this.openNotificationWithIcon('success');
 			} else if(type === 'examBind'){
@@ -94,6 +103,8 @@ class ButtonGroup extends PureComponent {
 						this.openNotificationWithIcon('error');
 					}
 				});
+			} else if(type === 'quesBind'){
+				//把题目添加给选择的试卷
 			}
 		} else {
 			Modal.warning({
@@ -178,7 +189,7 @@ class ButtonGroup extends PureComponent {
 				{/* examBindInfo路由下 */}
 				{RouterPath.includes('examBindInfo') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+						<Button type="primary" className="btn" onClick={() => this.checkMembers('linkToExamBind',SelectedRows)}>
 							{AddBtnName}
 						</Button>
 						<Button
@@ -223,11 +234,11 @@ class ButtonGroup extends PureComponent {
 					''
 				)}
 				{/* questionManage路由下 */}
-				{RouterPath.includes('questionManage') ? (
+				{RouterPath.includes('questionManage') && !RouterPath.includes('quesBind') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+						{/* <Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
-						</Button>
+						</Button> */}
 						{/* <Button type="primary" className="btn">
 							编辑
 						</Button> */}
@@ -238,13 +249,24 @@ class ButtonGroup extends PureComponent {
 				) : (
 					''
 				)}
+				{/* editExam路由 */}
 				{RouterPath.includes('editExam') ? (
 					<Fragment>
-						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+						<Button type="primary" className="btn" onClick={() => this.checkMembers('linkToQueBind',SelectedRows)}>
 							{AddBtnName}
 						</Button>
 						<Button type="danger" className="btn" onClick={() => this.batchOperate('delete', SelectedRows)}>
 							删除
+						</Button>
+					</Fragment>
+				) : (
+					''
+				)}
+				{/* quesBind路由 */}
+				{RouterPath.includes('quesBind') ? (
+					<Fragment>
+						<Button type="primary" className="btn" onClick={() => this.batchOperate('quesBind', SelectedRows)}>
+							{AddBtnName}
 						</Button>
 					</Fragment>
 				) : (

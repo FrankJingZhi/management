@@ -11,6 +11,7 @@ import ExamManage from './components/examManage/examManage'; //试卷管理组�
 import EditExam from './components/examManage/editExam'; //编辑试卷管理组件
 import QuestionManage from './components/questionManage/questionManage'; //题目管理组件
 import EditQues from './components/questionManage/editQues'; //编辑题目管理组件
+import QuesBind from './components/questionManage/quesBind'; //编辑题目管理组件
 
 
 const { Content } = Layout;
@@ -33,6 +34,7 @@ class Manage extends PureComponent {
 						<Route path={`${match.url}/examManage/editExam`} exact component={EditExam} />
 						<Route path={`${match.url}/questionManage`} exact component={QuestionManage} />
 						<Route path={`${match.url}/questionManage/editQues`} exact component={EditQues} />
+						<Route path={`${match.url}/questionManage/quesBind`} exact component={QuesBind} />
 					</Switch>
 				</Content>
 			</Layout>

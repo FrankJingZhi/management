@@ -74,18 +74,8 @@ class AddModal extends PureComponent {
       }
       {/* examManage路由下添加按钮弹框表单 */}
       {
-        RouterPath.includes('examManage') && !RouterPath.includes('editExam')
+        RouterPath.includes('examManage') && !RouterPath.includes('addExam')
         ? <WrappedExamForm 
-					closeAddHandleClick={closeAddHandleClick}
-					RouterPath={RouterPath}	
-					openNotificationWithIcon={this.openNotificationWithIcon}
-				/>
-        : ''
-      }
-      {/* editExam路由下添加按钮弹框表单 */}
-      {
-        RouterPath.includes('editExam') 
-        ? <WrapperQuesForm 
 					closeAddHandleClick={closeAddHandleClick}
 					RouterPath={RouterPath}	
 					openNotificationWithIcon={this.openNotificationWithIcon}

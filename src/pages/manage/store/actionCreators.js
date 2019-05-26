@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-26 09:09:11
+ * @lastTime: 2019-05-26 09:35:10
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -344,11 +344,13 @@ export const changeAddBtnName = (RouterPath) => {
 		data = '添加用户';
 	} else if (RouterPath.includes('examManage') && !RouterPath.includes('editExam')) {
 		data = '添加试卷';
-	} else if (RouterPath.includes('questionManage')) {
+	} else if (RouterPath.includes('questionManage') && !RouterPath.includes('quesBind')) {
 		data = '添加题目';
 	} else if (RouterPath.includes('examBindInfo')) {
 		data = '添加试卷';
 	} else if (RouterPath.includes('editExam')) {
+		data = '添加题目';
+	} else if (RouterPath.includes('quesBind')) {
 		data = '添加题目';
 	}
 	return {
