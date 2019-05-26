@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Radio, Button,notification } from 'antd';
+import { Form, Input, Radio, Button, notification,Cascader } from 'antd';
 
 const RadioGroup = Radio.Group;
 
 class ExamForm extends PureComponent {
-
-    state = {
-        value: 1
+	state = {
+		value: 1
 	};
-	
+
 	handleSubmit = (e) => {
-		const {closeAddHandleClick} = this.props;
+		const { closeAddHandleClick } = this.props;
 		e.preventDefault();
 		this.props.form.validateFieldsAndScroll((err, values) => {
 			if (!err) {
@@ -22,27 +21,25 @@ class ExamForm extends PureComponent {
 	};
 
 	openNotificationWithIcon = (type) => {
-		if(type === 'error'){
+		if (type === 'error') {
 			notification[type]({
 				message: '报错提示',
-				description:
-					'抱歉，数据丢失，请重试...'
+				description: '抱歉，数据丢失，请重试...'
 			});
-		}else{
+		} else {
 			notification[type]({
 				message: '成功提示',
-				description:
-					'操作成功！'
+				description: '操作成功！'
 			});
 		}
 	};
 
-    onChange = (e) => {
-        console.log('radio checked', e.target.value);
-        this.setState({
-            value: e.target.value
-        });
-    };
+	onChange = (e) => {
+		console.log('radio checked', e.target.value);
+		this.setState({
+			value: e.target.value
+		});
+	};
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
@@ -58,12 +55,39 @@ class ExamForm extends PureComponent {
 
 		const tailItemLayout = {
 			wrapperCol: {
-				md: { 
+				md: {
 					span: 3,
 					offset: 11
 				}
 			}
 		};
+
+		const residences = [
+			{
+				value: 'PHP',
+				label: 'PHP'
+			},
+			{
+				value: 'Javascript',
+				label: 'Javascript'
+			},
+			{
+				value: 'HTML',
+				label: 'HTML'
+			},
+			{
+				value: 'JAVA',
+				label: 'JAVA'
+			},
+			{
+				value: 'Andriod',
+				label: 'Andriod'
+			},
+			{
+				value: 'Phython',
+				label: 'Phython'
+			}
+		];
 
 		return (
 			<Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -73,6 +97,11 @@ class ExamForm extends PureComponent {
 						<Radio value={2}>普通</Radio>
 						<Radio value={3}>困难</Radio>
 					</RadioGroup>
+				</Form.Item>
+				<Form.Item label="类型">
+					{getFieldDecorator('residence', {
+						rules: [ { type: 'array', required: true, message: '请输入试卷类型！' } ]
+					})(<Cascader options={residences} />)}
 				</Form.Item>
 				<Form.Item label="试卷名">
 					{getFieldDecorator('examName', {

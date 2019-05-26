@@ -124,7 +124,7 @@ class ButtonGroup extends PureComponent {
 						<Button
 							type="primary"
 							className="btn"
-							onClick={() => this.batchOperate('examBind', SelectedRows)}
+							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
 						>
 							绑定试卷
 						</Button>
@@ -148,17 +148,17 @@ class ButtonGroup extends PureComponent {
 						{/* <Button type="primary" className="btn">
 							编辑
 						</Button> */}
-						<Button
+						{/* <Button
 							type="primary"
 							className="btn"
 							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
 						>
 							统计信息
-						</Button>
+						</Button> */}
 						<Button
 							type="primary"
 							className="btn"
-							onClick={() => this.batchOperate('examBind', SelectedRows)}
+							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
 						>
 							绑定试卷
 						</Button>
@@ -176,9 +176,9 @@ class ButtonGroup extends PureComponent {
 				{/* examBind路由下 */}
 				{RouterPath.includes('examBind') ? (
 					<Fragment>
-						{/* <Button type="primary" className="btn">
-							修改
-						</Button> */}
+						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
+							{AddBtnName}
+						</Button>
 						<Button
 							type="danger"
 							className="btn"

@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-25 18:16:19
+ * @lastTime: 2019-05-26 09:00:00
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -347,7 +347,7 @@ export const changeAddBtnName = (RouterPath) => {
 	} else if (RouterPath.includes('questionManage')) {
 		data = '添加题目';
 	} else if (RouterPath.includes('examBind')) {
-		data = '绑定试卷';
+		data = '添加试卷';
 	} else if (RouterPath.includes('editExam')) {
 		data = '添加题目';
 	}
@@ -435,8 +435,15 @@ export const deleteSelfClick = (ids, callback) => {
 	};
 };
 
+/**
+ * @Author: Frank
+ * @LastEditTime: Do not edit
+ * @LastEditors: Do not edit
+ * @description: 删除试卷记录，可批量删除
+ * @since: 2019-05-25 19:03:46
+ */
 export const deleteExam = (data,callback) => {
-	console.log('deleteExam:',data);
+	// console.log('deleteExam:',data);
 	let trainingids = [];
 	let testids = [];
 	for(let i=0;i<data.length;i++){
@@ -446,7 +453,7 @@ export const deleteExam = (data,callback) => {
 			testids.push(data[i].id)
 		}
 	}
-	console.log('trainingids:',trainingids,testids)
+	// console.log('trainingids:',trainingids,testids)
 	return(dispatch)=>{
 		if(data.testTime){
 			axios({
@@ -475,3 +482,4 @@ export const deleteExam = (data,callback) => {
 		}
 	}
 }
+

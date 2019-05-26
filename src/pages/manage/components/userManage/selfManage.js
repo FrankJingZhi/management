@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import ButtonGroup from '../components/buttonGroup';
 import TableUI from '../components/table';
-import UserModal from '../components/userModal';
+import AddModal from '../components/addModal';
 
 class SelfManage extends PureComponent {
 	render() {
@@ -13,7 +13,7 @@ class SelfManage extends PureComponent {
 			<Fragment>
 				<ButtonGroup history={history} />
 				<TableUI />
-				<UserModal />
+				<AddModal />
 			</Fragment>
 		);
 	}

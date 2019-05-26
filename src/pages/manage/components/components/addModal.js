@@ -6,7 +6,7 @@ import WrappedUserForm from './userForm';
 import WrappedExamForm from './examForm';
 import WrapperQuesForm from './quesForm';
 
-class UserModal extends PureComponent {
+class AddModal extends PureComponent {
 
 	openNotificationWithIcon = (type) => {
 		if (type === 'error') {
@@ -80,4 +80,4 @@ const mapDispatchToState = (dispatch) => ({
 	}
 });
 
-export default connect(mapStateToState, mapDispatchToState)(UserModal);
+export default connect(mapStateToState, mapDispatchToState)(AddModal);
