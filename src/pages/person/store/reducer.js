@@ -14,7 +14,8 @@ import * as containts from './containts';
 const defaultState = fromJS({
 	confirmDirty: false, //验证两次输入密码是否一致
 	disableInput: true,
-	visibleModal: false
+	visibleModal: false,
+	userInfo:{},
 });
 
 /**
@@ -30,6 +31,8 @@ export default (state = defaultState, action) => {
 			return state.set('visibleModal', action.data);
 		case containts.HANDLE_CONFIRM_BLUR:
 			return state.set('confirmDirty', action.data);
+		case containts.GET_USER_INFO:
+			return state.set('userInfo', action.data);
 		default:
 			return state;
 	}
