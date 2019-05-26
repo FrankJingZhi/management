@@ -1,13 +1,17 @@
 import React, { PureComponent, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import ButtonGroup from '../components/buttonGroup';
 import TableUI from '../components/table';
 import AddModal from '../components/addModal';
 
-class ExamManage extends PureComponent {
+class ExamBindInfo extends PureComponent {
 	render() {
+		console.log('ExamBindInfo:', this);
+		const { history } = this.props;
+
 		return (
 			<Fragment>
-				<ButtonGroup />
+				<ButtonGroup history={history} />
 				<TableUI />
 				<AddModal />
 			</Fragment>
@@ -15,4 +19,4 @@ class ExamManage extends PureComponent {
 	}
 }
 
-export default ExamManage;
+export default withRouter(ExamBindInfo);

@@ -76,14 +76,16 @@ class ButtonGroup extends PureComponent {
 						this.openNotificationWithIcon('error');
 					}
 				});
-			} else if (type === 'linkToExamBind') {
+			} else if (type === 'linkToExamBindInfo') {
 				window.sessionStorage.setItem('userid', rowsJS[0].name);
 				this.props.history.push({
-					pathname: `/layout/manage/userManage/examBind`
+					pathname: `/layout/manage/userManage/examBindInfo`
 				});
-			} else if (type === 'examBind') {
+			} else if (type === 'examBindInfo') {
 				this.openNotificationWithIcon('success');
-			} else if (type === 'deleteExam') {
+			} else if(type === 'examBind'){
+				//把选择的试卷添加给选择的用户
+			}else if (type === 'deleteExam') {
 				deleteExam(rowsJS, (data) => {
 					if (data.status === 'success') {
 						this.openNotificationWithIcon('success');
@@ -109,7 +111,7 @@ class ButtonGroup extends PureComponent {
 				{/* userManage路由下 */}
 				{RouterPath.includes('userManage') &&
 				!RouterPath.includes('selfManage') &&
-				!RouterPath.includes('examBind') ? (
+				!RouterPath.includes('examBindInfo') ? (
 					<Fragment>
 						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
@@ -124,7 +126,7 @@ class ButtonGroup extends PureComponent {
 						<Button
 							type="primary"
 							className="btn"
-							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
+							onClick={() => this.batchOperate('linkToExamBindInfo', SelectedRows)}
 						>
 							绑定试卷
 						</Button>
@@ -158,7 +160,7 @@ class ButtonGroup extends PureComponent {
 						<Button
 							type="primary"
 							className="btn"
-							onClick={() => this.batchOperate('linkToExamBind', SelectedRows)}
+							onClick={() => this.batchOperate('linkToExamBindInfo', SelectedRows)}
 						>
 							绑定试卷
 						</Button>
@@ -173,8 +175,8 @@ class ButtonGroup extends PureComponent {
 				) : (
 					''
 				)}
-				{/* examBind路由下 */}
-				{RouterPath.includes('examBind') ? (
+				{/* examBindInfo路由下 */}
+				{RouterPath.includes('examBindInfo') ? (
 					<Fragment>
 						<Button type="primary" className="btn" onClick={() => showAddHandleClick()}>
 							{AddBtnName}
@@ -185,6 +187,16 @@ class ButtonGroup extends PureComponent {
 							onClick={() => this.batchOperate('deleteExam', SelectedRows)}
 						>
 							删除
+						</Button>
+					</Fragment>
+				) : (
+					''
+				)}
+				{/* examBind路由下 */}
+				{RouterPath.includes('examBind') ? (
+					<Fragment>
+						<Button type="primary" className="btn" onClick={() => this.batchOperate('examBind', SelectedRows)}>
+							{AddBtnName}
 						</Button>
 					</Fragment>
 				) : (

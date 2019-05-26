@@ -34,7 +34,37 @@ class AddModal extends PureComponent {
 			>
       {/* userManage路由下添加按钮弹框表单 */}
       {
-        RouterPath.includes('userManage') 
+        RouterPath.includes('userManage') && !RouterPath.includes('examBindInfo') && !RouterPath.includes('examBind')
+				? <WrappedUserForm
+						closeAddHandleClick={closeAddHandleClick}
+						RouterPath={RouterPath}	
+						openNotificationWithIcon={this.openNotificationWithIcon}
+					/>
+        : ''
+      }
+      {/* examBindInfo路由下添加按钮弹框表单 */}
+      {
+        RouterPath.includes('examBindInfo') && !RouterPath.includes('examBind')
+				? <WrappedUserForm
+						closeAddHandleClick={closeAddHandleClick}
+						RouterPath={RouterPath}	
+						openNotificationWithIcon={this.openNotificationWithIcon}
+					/>
+        : ''
+      }
+      {/* examBind路由下添加按钮弹框表单 */}
+      {
+        RouterPath.includes('examBind')
+				? <WrappedUserForm
+						closeAddHandleClick={closeAddHandleClick}
+						RouterPath={RouterPath}	
+						openNotificationWithIcon={this.openNotificationWithIcon}
+					/>
+        : ''
+      }
+      {/* userManage路由下添加按钮弹框表单 */}
+      {
+        RouterPath.includes('userManage') && !RouterPath.includes('examBindInfo') && !RouterPath.includes('examBind')
 				? <WrappedUserForm
 						closeAddHandleClick={closeAddHandleClick}
 						RouterPath={RouterPath}	

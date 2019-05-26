@@ -11,7 +11,7 @@ import { fromJS } from 'immutable';
 
 /**
  * @Author: Frank
- * @lastTime: 2019-05-26 09:00:00
+ * @lastTime: 2019-05-26 09:09:11
  * @LastAuthor: Do not edit
  * @description: 获取表格数据api
  * @since: 2019-04-30 13:59:26
@@ -21,7 +21,7 @@ export const getTableInfo = (RouterPath, userid) => {
 		if (
 			RouterPath.includes('userManage') &&
 			!RouterPath.includes('selfManage') &&
-			!RouterPath.includes('examBind')
+			!RouterPath.includes('examBindInfo')
 		) {
 			//userManage 超级管理员
 			axios({
@@ -108,8 +108,8 @@ export const getTableInfo = (RouterPath, userid) => {
 				});
 				dispatch(getTableInfoAction(data));
 			});
-		} else if (RouterPath.includes('examBind')) {
-			//examBind 绑定试卷
+		} else if (RouterPath.includes('examBindInfo')) {
+			//examBindInfo 绑定试卷
 			const getTest = () => {
 				return axios({
 					url: '/textNet-SSM/testRecord/findTest',
@@ -203,7 +203,7 @@ export const changeSelectedRows = (data) => ({
  */
 export const getColumnsInfo = (data) => {
 	let columns = [];
-	if (data.includes('userManage') && !data.includes('selfManage') && !data.includes('examBind')) {
+	if (data.includes('userManage') && !data.includes('selfManage') && !data.includes('examBindInfo')) {
 		columns = [
 			{
 				title: '用户组',
@@ -279,7 +279,7 @@ export const getColumnsInfo = (data) => {
 				dataIndex: 'binding'
 			}
 		];
-	} else if (data.includes('examBind')) {
+	} else if (data.includes('examBindInfo')) {
 		columns = [
 			{
 				title: '试卷名',
@@ -338,7 +338,7 @@ export const closeAddHandleClick = () => ({
  */
 export const changeAddBtnName = (RouterPath) => {
 	let data = '';
-	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage') && !RouterPath.includes('examBind')) {
+	if (RouterPath.includes('userManage') && !RouterPath.includes('selfManage') && !RouterPath.includes('examBindInfo')) {
 		data = '添加用户组';
 	} else if (RouterPath.includes('selfManage')) {
 		data = '添加用户';
@@ -346,7 +346,7 @@ export const changeAddBtnName = (RouterPath) => {
 		data = '添加试卷';
 	} else if (RouterPath.includes('questionManage')) {
 		data = '添加题目';
-	} else if (RouterPath.includes('examBind')) {
+	} else if (RouterPath.includes('examBindInfo')) {
 		data = '添加试卷';
 	} else if (RouterPath.includes('editExam')) {
 		data = '添加题目';
